@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from warehouse import views
+import warehouse.views
 
 urlpatterns = [
     path('homepage/', warehouse.views.HomePage.as_view(), name="homepage"),
