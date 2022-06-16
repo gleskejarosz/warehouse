@@ -18,5 +18,4 @@ urlpatterns = [
     path("company-model-form-view/", views.CompanyModelFormView.as_view(), name="company-model-form-view"),
     path("company-template-view/", views.CompanyTemplateView.as_view(), name="company-template-view"),
     path("company-update-view/", views.CompanyUpdateView.as_view(), name="company-update-view"),
-
 ]
