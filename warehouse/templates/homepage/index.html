@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Welcome {{ user }} </h1>
+{% else %}
+    <h1>Welcome</h1>
+{% endif %}
+    <p><a href="{% url 'polls_class_view:polls-index' %}">POLLS APPLICATION</a></p>
+    <p><a href="{% url 'movies:index-movies' %}">MOVIES APPLICATION</a></p>
+{% endblock %}
