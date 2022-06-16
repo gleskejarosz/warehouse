@@ -1,5 +1,5 @@
 from django import forms
-from models import Company
+from views import Company
 import string
 
 
@@ -14,4 +14,5 @@ class CompanyModelForm(forms.ModelForm):
     def clean_contact_person(self):
         return string.capwords(self.cleaned_data["contact_person"])
 
-
+    def clean_email(self):
+        return self.cleaned_data["email"].lower()
