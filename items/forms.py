@@ -1,5 +1,5 @@
 from django import forms
-from views import Company
+from items.models import Company
 import string
 
 

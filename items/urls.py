@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from items import views
 
 app_name = "items_app"
+
 
 urlpatterns = [
     path("items-create-view/", views.ItemCreateView.as_view(), name="items-create-view"),

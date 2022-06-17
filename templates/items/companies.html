@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% for c in companies %}
-        <a href="{% url 'add url here' pk=c.pk %}"><li>{{ a }}</li></a>
+        <a href="{% url 'add url here' pk=c.pk %}"><li>{{ c }}</li></a>
     {% endfor %}
     <a href="{% url 'homepage' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}
