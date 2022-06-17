@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<h2>UNITS:</h2>
     {% for o in object_list %}
-        <li> {{ o }} </li>
+        <li>{{ o }}</li></a>
     {% endfor %}
-    <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
+    <a href="{% url 'homepage' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}
