@@ -13,6 +13,7 @@ class Category(models.Model):
 
 class Unit(models.Model):
     unit = models.CharField(max_length=10)
+    description = models.CharField(max_length=128, blank=True)
 
     def __str__(self):
         return f" {self.unit}"
