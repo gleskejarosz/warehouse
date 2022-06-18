@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for c in companies %}
-        <a href="{% url 'add url here' pk=c.pk %}"><li>{{ c }}</li></a>
-    {% endfor %}
-    <a href="{% url 'homepage' %}">RETURN TO INDEX PAGE</a>
+<h1>ITEMS:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="5%">ID</th>
+            <th scope="col" width="15%">Name</th>
+            <th scope="col" width="20%">Contact</th>
+            <th scope="col" width="20%">Min Order Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in companies %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'items_app:company-detail-view' pk=c.pk %}">{{ c.name }}</a></td>
+                <td>{{ c.contact_person }} </td>
+                <td>{{ c.minimum_order_value }} PLN</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{% url 'items_app:company-model-form-view' %}">ADD Company</a></p>
+    <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}

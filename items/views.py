@@ -90,7 +90,7 @@ class ItemListView(ListView):
 class CompanyModelFormView(FormView):
     template_name = "form.html"
     form_class = CompanyModelForm
-    success_url = 'homepage'
+    success_url = reverse_lazy('items_app:company-template-view')
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -108,7 +108,7 @@ def index(request):
 def units(request):
     return render(
         request,
-        template_name="units/units.html",
+        template_name="items/units.html",
         context={"units": Unit.objects.all()}
     )
 

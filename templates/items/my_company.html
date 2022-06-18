@@ -1,8 +1,8 @@
-<{% extends "base.html" %}
+{% extends "base.html" %}
 {% block content %}
     <p>Company ID: {{ company.id }}</p>
-    <p>Company NAME: {{ company.name }}</p>
-    <p><a href="{% url 'items_app:company-update-view' pk=item.pk %}">UPDATE</a></p>
-    <p><a href="{% url 'items_app:company-delete-view' pk=item.pk %}">DELETE</a></p>
-    <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
+    <p>Company Name: {{ company.name }}</p>
+    <p><a href="{% url 'items_app:company-update-view' pk=company.pk %}">UPDATE</a></p>
+    <p><a href="{% url 'items_app:company-delete-view' pk=company.pk %}">DELETE</a></p>
+    <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}
