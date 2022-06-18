@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>ITEMS:</h1>
+<table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="5%">No</th>
+            <th scope="col" width="15%">Name</th>
+            <th scope="col" width="40%">Description</th>
+            <th scope="col" width="20%">Producer</th>
+            <th scope="col" width="20%">Producer number</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in object_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'items_app:items-detail-view' pk=o.pk %}">{{ o.name }}</a></td>
+                <td>{{ o.description }} </td>
+                <td>{{ o.producer }} </td>
+                <td>{{ o.producer_no }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
+{% endblock %}

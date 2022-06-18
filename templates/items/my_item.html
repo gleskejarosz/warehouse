@@ -1,7 +1,43 @@
 <{% extends "base.html" %}
 {% block content %}
-    <p>ITEM ID: {{ item.id }}</p>
-    <p>ITEM NAME: {{ item.name }}</p>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="20%">Name</th>
+            <th scope="col" width="50%">Description</th>
+            <th scope="col" width="15%">Category</th>
+            <th scope="col" width="6%">Unit</th>
+            <th scope="col" width="9%">Qty</th>
+        </tr>
+        <tr>
+            <td>{{ item.name }} </td>
+            <td>{{ item.description }} </td>
+            <td>{{ item.category }} </td>
+            <td>{{ item.unit }} </td>
+            <td>{{ item.quantity }} </td>
+        </tr>
+        <p>
+          <tr>
+            <th scope="col" width="20%">Producer</th>
+            <th scope="col" width="15%">Producer no</th>
+            <th scope="col" width="20%">Supplier</th>
+            <th scope="col" width="15%">Supplier no</th>
+            <th scope="col" width="15%">Minimum order</th>
+            <th scope="col" width="15%">Minimum amount</th>
+        </tr>
+        <tr>
+            <td>{{ item.producer }} </td>
+            <td>{{ item.producer_no }} </td>
+            <td>{{ item.supplier }} </td>
+            <td>{{ item.supplier_no }} </td>
+            <td>{{ item.minimum_quantity }} </td>
+            <td>{{ item.minimum_order }} </td>
+        </tr>
+        </p>
+
+
+        </thead>
+    </table>
     <p><a href="{% url 'items_app:items-update-view' pk=item.pk %}">UPDATE</a></p>
     <p><a href="{% url 'items_app:items-delete-view' pk=item.pk %}">DELETE</a></p>
     <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>

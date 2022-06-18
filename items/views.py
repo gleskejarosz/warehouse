@@ -1,17 +1,28 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
+from django.db.models import Q, OuterRef, CharField
 
-from items.models import Item, Unit
+from items.models import Company, Item, Unit
 from items.forms import CompanyModelForm
-from items.models import Company, Item
 
 
 def items(request):
+    items_list = Item.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items_list, 10)
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
     return render(
         request,
         template_name='items/items.html',
-        context={'items': Item.objects.all()}
+        context={'items': items_list},
     )
 
 
@@ -130,3 +141,16 @@ class UnitUpdateView(UpdateView):
     fields = ("unit", "description")
     template_name = "form.html"
     success_url = reverse_lazy("items_app:units-list-view")
+
+
+class SearchResultsView(ListView):
+    model = Item
+    template_name = "items/items_search.html"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        object_list = Item.objects.filter(
+            Q(name__icontains=query) | Q(description__icontains=query)
+        )
+        return object_list
+
