@@ -2,9 +2,9 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
-from django.db.models import Q, OuterRef, CharField
+from django.db.models import Q
 
-from items.models import Company, Item, Unit
+from items.models import Company, Item, Unit, Category
 from items.forms import CompanyModelForm
 
 
@@ -108,7 +108,7 @@ def index(request):
 def units(request):
     return render(
         request,
-        template_name="items/units.html",
+        template_name="units/units.html",
         context={"units": Unit.objects.all()}
     )
 
@@ -143,6 +143,44 @@ class UnitUpdateView(UpdateView):
     success_url = reverse_lazy("items_app:units-list-view")
 
 
+def category(request):
+    return render(
+        request,
+        template_name="category/category.html",
+        context={"category": Category.objects.all()}
+    )
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    template_name = "form.html"
+    fields = "__all__"
+    success_url = reverse_lazy("items_app:category-list-view")
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    template_name = "category/delete_category.html"
+    success_url = reverse_lazy("items_app:category-list-view")
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = "category/my_category.html"
+
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = "category/list_view_category.html"
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    fields = ("name", "description")
+    template_name = "form.html"
+    success_url = reverse_lazy("items_app:category-list-view")
+
+
 class SearchResultsView(ListView):
     model = Item
     template_name = "items/items_search.html"
@@ -153,4 +191,3 @@ class SearchResultsView(ListView):
             Q(name__icontains=query) | Q(description__icontains=query)
         )
         return object_list
-

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>UNITS LIST:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="5%">ID</th>
+            <th scope="col" width="15%">Unit</th>
+            <th scope="col" width="40%">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in units %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'items_app:units-detail-view' pk=i.pk %}">{{ i.unit }}</a></td>
+                <td>{{ i.description }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{% url 'items_app:units-create-view' %}">ADD UNIT</a></p>
+    <a href="{% url 'items_app:index' %}">RETURN TO DASHBOARD</a>
+{% endblock %}
