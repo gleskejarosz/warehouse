@@ -9,19 +9,22 @@
         <tr>
             <th scope="col" width="5%">No</th>
             <th scope="col" width="15%">Name</th>
-            <th scope="col" width="40%">Description</th>
-            <th scope="col" width="20%">Producer</th>
-            <th scope="col" width="20%">Producer number</th>
+            <th scope="col" width="53%">Description</th>
+            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Producer</th>
+            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Unit</th>
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Quantity</th>
         </tr>
         </thead>
         <tbody>
         {% for i in items %}
             <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td><a href="{% url 'items_app:items-detail-view' pk=i.pk %}">{{ i.name }}</a></td>
+                <th scope="row" style="vertical-align: middle;">{{ forloop.counter }}</th>
+                <td style="vertical-align: middle;">
+                    <a href="{% url 'items_app:items-detail-view' pk=i.pk %}">{{ i.name }}</a></td>
                 <td>{{ i.description }} </td>
-                <td>{{ i.producer }} </td>
-                <td>{{ i.producer_no }} </td>
+                <td style="text-align: center; vertical-align: middle;">{{ i.producer }} </td>
+                <td style="text-align: center; vertical-align: middle;">{{ i.unit }} </td>
+                <td style="text-align: center; vertical-align: middle;">{{ i.quantity }} </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -49,7 +52,6 @@
     {% endif %}
   </ul>
 {% endif %}
-    <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
     <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}
 

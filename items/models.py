@@ -35,6 +35,7 @@ class Item(models.Model):
     supplier_no = models.CharField(max_length=50, blank=True)
     minimum_quantity = models.PositiveSmallIntegerField(default=1)
     minimum_order = models.PositiveSmallIntegerField(default=0)
+    image = models.ImageField(upload_to='items/', blank=True)
 
     def __str__(self):
         return f"{self.producer} - {self.name}"

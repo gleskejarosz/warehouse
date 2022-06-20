@@ -42,9 +42,8 @@ class CompanyUpdateView(UpdateView):
 
 class ItemUpdateView(UpdateView):
     model = Item
-    fields = ("name", "description", "category",
-              "unit", "quantity", "producer", "producer_no", "supplier", "supplier_no",
-              "minimum_quantity", "minimum_order")
+    fields = "__all__"
+    exclude = ("registration_date", )
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
 
