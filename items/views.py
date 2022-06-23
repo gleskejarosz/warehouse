@@ -3,6 +3,10 @@ from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
 from django.db.models import Q
+from django.contrib.auth.decorators import (
+    login_required,
+    permission_required,
+)
 
 from items.models import Company, Item, Unit, Category
 from items.forms import CompanyModelForm
@@ -104,6 +108,8 @@ def index(request):
     )
 
 
+@permission_required("units.view_units", raise_exception=True)
+@login_required
 def units(request):
     return render(
         request,
@@ -142,6 +148,8 @@ class UnitUpdateView(UpdateView):
     success_url = reverse_lazy("items_app:units-list-view")
 
 
+@permission_required("units.view_category", raise_exception=True)
+@login_required
 def category(request):
     return render(
         request,
