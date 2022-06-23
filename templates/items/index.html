@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <p><a href="{% url 'items_app:items' %}">ITEM</a></p>
+    <p><a href="{% url 'items_app:search-form' %}">ITEM</a></p>
 {#    {% if user.is_authenticated %}#}
         <p><a href={% url 'items_app:company-template-view' %}>COMPANIES</a></p>
 {#    {% else %}#}
@@ -8,4 +8,5 @@
 {#    {% endif %}#}
     <p><a href="{% url 'items_app:units' %}">UNITS</a></p>
     <p><a href="{% url 'items_app:category' %}">CATEGORY</a></p>
+    <p><a href="{% url 'items_app:items-below-minimum-stock' %}">ITEMS BELOW MINIMUM STOCK</a></p>
 {% endblock %}

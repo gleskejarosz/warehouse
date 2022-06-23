@@ -1,15 +1,17 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
-from django.db.models import Q
+from django.db.models import F, Q
 
+from .forms import ItemFilter
 from items.models import Company, Item, Unit, Category
 from items.forms import CompanyModelForm
 
 
 def items(request):
-    items_list = Item.objects.all()
+    items_list = Item.objects.all().order_by('-registration_date')
     page = request.GET.get('page', 1)
 
     paginator = Paginator(items_list, 10)
@@ -26,7 +28,7 @@ def items(request):
     )
 
 
-class ItemCreateView(CreateView):
+class ItemCreateView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = "form.html"
     fields = "__all__"
@@ -40,7 +42,7 @@ class CompanyUpdateView(UpdateView):
     success_url = reverse_lazy("items_app:company-list-view")
 
 
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
     fields = "__all__"
     exclude = ("registration_date", )
@@ -54,7 +56,7 @@ class CompanyDeleteView(DeleteView):
     success_url = reverse_lazy("items_app:companies-template-view")
 
 
-class ItemDeleteView(DeleteView):
+class ItemDeleteView(LoginRequiredMixin, DeleteView):
     model = Item
     template_name = "items/delete.html"
     success_url = reverse_lazy("items_app:items-list-view")
@@ -82,7 +84,7 @@ class CompanyListView(ListView):
 
 
 class ItemListView(ListView):
-    template_name = "items/list_view.html"
+    template_name = "items/items.html"
     model = Item
 
 
@@ -188,5 +190,30 @@ class SearchResultsView(ListView):
         query = self.request.GET.get("q")
         object_list = Item.objects.filter(
             Q(name__icontains=query) | Q(description__icontains=query)
-        )
+        ).order_by('-registration_date')
         return object_list
+
+
+def below_minimum_stock(request):
+    items_list = Item.objects.order_by('-registration_date').exclude(quantity__gte=F('minimum_quantity'))
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items_list, 10)
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        template_name='items/items_below_min.html',
+        context={'items': items_list},
+    )
+
+
+def search(request):
+    items_list = Item.objects.all().order_by('-registration_date')
+    items_filter = ItemFilter(request.GET, queryset=items_list)
+    return render(request, 'items/filter_list.html', {'filter': items_filter})
+

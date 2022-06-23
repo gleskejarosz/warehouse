@@ -1,6 +1,6 @@
 from django.urls import path
-
 from items import views
+
 
 app_name = "items_app"
 
@@ -14,7 +14,9 @@ urlpatterns = [
     path("items-list-view/", views.ItemListView.as_view(), name="items-list-view"),
     path('items/index/', views.index, name="items-index"),
     path('items/', views.items, name="items"),
+    path('items-below-minimum-stock', views.below_minimum_stock, name="items-below-minimum-stock"),
     path('search/', views.SearchResultsView.as_view(), name="search-result"),
+    path('search-form/', views.search, name="search-form"),
     path("company-delete-view/<pk>/", views.CompanyDeleteView.as_view(), name="company-delete-view"),
     path("company-detail-view/<pk>/", views.CompanyDetailView.as_view(), name="company-detail-view"),
     path("company-list-view/", views.CompanyListView.as_view(), name="company-list-view"),

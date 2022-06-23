@@ -1,6 +1,9 @@
-from django import forms
-from items.models import Company
 import string
+
+from django import forms
+import django_filters
+
+from items.models import Item, Company
 
 
 class CompanyModelForm(forms.ModelForm):
@@ -16,3 +19,10 @@ class CompanyModelForm(forms.ModelForm):
 
     def clean_email(self):
         return self.cleaned_data["email"].lower()
+
+
+class ItemFilter(django_filters.FilterSet):
+    class Meta:
+        model = Item
+        fields = "__all__"
+        exclude = ("registration_date", "image", )

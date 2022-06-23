@@ -1,4 +1,5 @@
 from django.db import models
+from items.utils import image_resize
 
 
 class Category(models.Model):
@@ -39,6 +40,13 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.producer} - {self.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.image:
+            return ""
+        else:
+            image_resize(self.image, 1000, 800)
+            super().save(*args, **kwargs)
 
 
 class Company(models.Model):
