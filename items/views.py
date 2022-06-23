@@ -89,7 +89,7 @@ class CompanyListView(ListView):
 
 
 class ItemListView(ListView):
-    template_name = "items/items.html"
+    template_name = "items/list_view.html"
     model = Item
 
 

@@ -36,17 +36,14 @@ class Item(models.Model):
     supplier_no = models.CharField(max_length=50, blank=True)
     minimum_quantity = models.PositiveSmallIntegerField(default=1)
     minimum_order = models.PositiveSmallIntegerField(default=0)
-    image = models.ImageField(upload_to='items/', blank=True)
+    image = models.ImageField(upload_to='items/', default="items/default.png", blank=True)
 
     def __str__(self):
         return f"{self.producer} - {self.name}"
 
     def save(self, *args, **kwargs):
-        if not self.image:
-            return ""
-        else:
-            image_resize(self.image, 1000, 800)
-            super().save(*args, **kwargs)
+        image_resize(self.image, 1000, 800)
+        super().save(*args, **kwargs)
 
 
 class Company(models.Model):
