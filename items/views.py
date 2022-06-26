@@ -4,28 +4,18 @@ from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
 from django.db.models import F, Q
-from django.db.models import Q
 from django.contrib.auth.decorators import (
     login_required,
     permission_required,
 )
 
-from .forms import ItemFilter
+from .filters import ItemFilter
 from items.models import Company, Item, Unit, Category
 from items.forms import CompanyModelForm
 
 
 def items(request):
-    items_list = Item.objects.all().order_by('-registration_date')
-    page = request.GET.get('page', 1)
-
-    paginator = Paginator(items_list, 10)
-    try:
-        items_list = paginator.page(page)
-    except PageNotAnInteger:
-        items_list = paginator.page(1)
-    except EmptyPage:
-        items_list = paginator.page(paginator.num_pages)
+    items_list = Item.objects.all()
     return render(
         request,
         template_name='items/items.html',
@@ -89,8 +79,12 @@ class CompanyListView(ListView):
 
 
 class ItemListView(ListView):
-    template_name = "items/list_view.html"
+    template_name = "items/items.html"
     model = Item
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', '-registration_date')
+        return ordering
 
 
 class CompanyModelFormView(FormView):
@@ -198,7 +192,7 @@ class SearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         object_list = Item.objects.filter(
-            Q(name__icontains=query) | Q(description__icontains=query)
+            Q(name__icontains=query) | Q(description__icontains=query) | Q(producer_no__icontains=query)
         ).order_by('-registration_date')
         return object_list
 

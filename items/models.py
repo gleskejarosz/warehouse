@@ -30,19 +30,20 @@ class Item(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(default=0)
     producer = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_prod", blank=True, null=True)
-    producer_no = models.CharField(max_length=50, unique=True, blank=True)
+    producer_no = models.CharField(max_length=50, unique=True, blank=True, null=True)
     supplier = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_supp",
                                  blank=True, null=True)
     supplier_no = models.CharField(max_length=50, blank=True)
     minimum_quantity = models.PositiveSmallIntegerField(default=1)
     minimum_order = models.PositiveSmallIntegerField(default=0)
-    image = models.ImageField(upload_to='items/', default="items/default.png", blank=True)
+    image = models.ImageField(upload_to='items/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.producer} - {self.name}"
 
     def save(self, *args, **kwargs):
-        image_resize(self.image, 1000, 800)
+        if self.image:
+            image_resize(self.image, 1000, 800)
         super().save(*args, **kwargs)
 
 
