@@ -39,7 +39,6 @@ class CompanyUpdateView(UpdateView):
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
-    fields = "__all__"
     exclude = ("registration_date", )
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
@@ -83,7 +82,7 @@ class ItemListView(ListView):
     model = Item
 
     def get_ordering(self):
-        ordering = self.request.GET.get('ordering', '-registration_date')
+        ordering = self.request.GET.get('ordering', 'name')
         return ordering
 
 
@@ -192,13 +191,14 @@ class SearchResultsView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         object_list = Item.objects.filter(
-            Q(name__icontains=query) | Q(description__icontains=query) | Q(producer_no__icontains=query)
-        ).order_by('-registration_date')
+            Q(name__icontains=query) | Q(description__icontains=query) |
+            Q(producer_no__icontains=query) | Q(supplier_no__icontains=query)
+        ).order_by('name')
         return object_list
 
 
 def below_minimum_stock(request):
-    items_list = Item.objects.order_by('-registration_date').exclude(quantity__gte=F('minimum_quantity'))
+    items_list = Item.objects.order_by('name').exclude(quantity__gte=F('minimum_quantity'))
     page = request.GET.get('page', 1)
 
     paginator = Paginator(items_list, 10)
@@ -216,7 +216,7 @@ def below_minimum_stock(request):
 
 
 def search(request):
-    items_list = Item.objects.all().order_by('-registration_date')
+    items_list = Item.objects.all().order_by('name')
     items_filter = ItemFilter(request.GET, queryset=items_list)
     return render(request, 'items/filter_list.html', {'filter': items_filter})
 

@@ -26,6 +26,8 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'items_app:items-create-view' %}">ADD ITEM</a></p>
+    {% endif %}
     <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}
