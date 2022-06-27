@@ -2,7 +2,9 @@
 {% block content %}
     <p>UNITS ID: {{ unit.id }}</p>
     <p>UNITS NAME: {{ unit.name }}</p>
-    <p><a href="{% url 'items_app:units-update-view' pk=unit.pk %}">UPDATE UNIT</a></p>
-    <p><a href="{% url 'items_app:units-delete-view' pk=unit.pk %}">DELETE UNIT</a></p>
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'items_app:units-update-view' pk=unit.pk %}">UPDATE UNIT</a></p>
+        <p><a href="{% url 'items_app:units-delete-view' pk=unit.pk %}">DELETE UNIT</a></p>
+    {% endif %}
     <a href="{% url 'items_app:units' %}">RETURN TO UNITS LIST</a>
 {% endblock %}
