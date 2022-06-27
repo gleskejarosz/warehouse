@@ -39,6 +39,7 @@ class CompanyUpdateView(UpdateView):
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
+    fields = "__all__"
     exclude = ("registration_date", )
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
@@ -104,8 +105,8 @@ def index(request):
     )
 
 
-@permission_required("units.view_units", raise_exception=True)
-@login_required
+# @permission_required("units.view_units", raise_exception=True)
+# @login_required
 def units(request):
     return render(
         request,
@@ -144,8 +145,8 @@ class UnitUpdateView(UpdateView):
     success_url = reverse_lazy("items_app:units-list-view")
 
 
-@permission_required("units.view_category", raise_exception=True)
-@login_required
+# @permission_required("units.view_category", raise_exception=True)
+# @login_required
 def category(request):
     return render(
         request,
@@ -215,8 +216,25 @@ def below_minimum_stock(request):
     )
 
 
+def above_minimum_stock(request):
+    items_list = Item.objects.order_by('-quantity').exclude(quantity__lte=0)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items_list, 10)
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        template_name='items/items_above_min.html',
+        context={'items': items_list},
+    )
+
+
 def search(request):
     items_list = Item.objects.all().order_by('name')
     items_filter = ItemFilter(request.GET, queryset=items_list)
     return render(request, 'items/filter_list.html', {'filter': items_filter})
-

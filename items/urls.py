@@ -15,6 +15,7 @@ urlpatterns = [
     path('items/index/', views.index, name="items-index"),
     path('items/', views.items, name="items"),
     path('items-below-minimum-stock', views.below_minimum_stock, name="items-below-minimum-stock"),
+    path('items-above-minimum-stock', views.above_minimum_stock, name="items-above-minimum-stock"),
     path('search/', views.SearchResultsView.as_view(), name="search-result"),
     path('search-form/', views.search, name="search-form"),
     path("company-delete-view/<pk>/", views.CompanyDeleteView.as_view(), name="company-delete-view"),
