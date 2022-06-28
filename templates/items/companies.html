@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>ITEMS:</h1>
+    <p><a href="{% url 'items_app:company-model-form-view' %}">ADD Company</a></p>
+<h2>COMPANIES</h2>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -11,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for c in companies %}
+        {% for c in object_list %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{% url 'items_app:company-detail-view' pk=c.pk %}">{{ c.name }}</a></td>
@@ -21,6 +22,57 @@
         {% endfor %}
         </tbody>
     </table>
-    <p><a href="{% url 'items_app:company-model-form-view' %}">ADD Company</a></p>
+    <header>
+{% if page_obj.has_other_pages %}
+  <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}"> &laquo; </a></li>
+    {% else %}
+      <li class="disabled"><span> &laquo; </span></li>
+    {% endif %}
+    <ul>
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
+      {% else %}
+          <a class="paginator_iter" href="?page={{ i }}"> {{   i  }} </a>
+      {% endif %}
+    {% endfor %}
+    </ul>
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}"> &raquo; </a></li>
+    {% else %}
+      <li class="disabled"><span> &raquo </span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+    </header>
+
+
+{#<div class="pagination">#}
+{#    <span class="step-links">#}
+{#        {% if page_obj.has_previous %}#}
+{#            <a href="?page=1">&laquo; first</a>#}
+{#            <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#        <span class="current">#}
+{#            {% for i in page_obj.paginator.page_range %}#}
+{#                {% if page_obj.number == i %}#}
+{#                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
+{#                {% else %}#}
+{#                    <li><a href="?page={{ i }}">{{ i }}</a></li>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </span>#}
+{#        <span>#}
+{#        {% if page_obj.has_next %}#}
+{#            <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#        {% endif %}#}
+{#    </span>#}
+{#</div>#}
+
+
     <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}

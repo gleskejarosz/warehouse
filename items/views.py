@@ -58,7 +58,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 class CompanyDeleteView(DeleteView):
     model = Company
     template_name = "items/delete.html"
-    success_url = reverse_lazy("items_app:companies-template-view")
+    success_url = reverse_lazy("items_app:companies")
 
 
 class ItemDeleteView(LoginRequiredMixin, DeleteView):
@@ -69,7 +69,7 @@ class ItemDeleteView(LoginRequiredMixin, DeleteView):
 
 class CompanyTemplateView(TemplateView):
     template_name = "items/companies.html"
-    extra_context = {"companies": Company.objects.all()}
+    extra_context = {"object_list": Company.objects.all()}
 
 
 class CompanyDetailView(DetailView):
@@ -82,10 +82,19 @@ class ItemDetailView(DetailView):
     template_name = "items/my_item.html"
 
 
+class ItemDetailTransactionView(DetailView):
+    model = Item
+    template_name = "items/my_item.html"
+
+
 class CompanyListView(ListView):
-    # permission_required =
-    template_name = "items/list_view.html"
+    template_name = "items/companies.html"
     model = Company
+    paginate_by = 10
+
+    # def change_pagination(self, number):
+    #     if isinstance(number, int):
+    #         self.paginate_by = number
 
 
 class ItemListView(ListView):
@@ -96,7 +105,7 @@ class ItemListView(ListView):
 class CompanyModelFormView(FormView):
     template_name = "form.html"
     form_class = CompanyModelForm
-    success_url = reverse_lazy('items_app:company-template-view')
+    success_url = reverse_lazy('items_app:companies')
 
     def form_valid(self, form):
         result = super().form_valid(form)

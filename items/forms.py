@@ -24,5 +24,4 @@ class CompanyModelForm(forms.ModelForm):
 class ItemFilter(django_filters.FilterSet):
     class Meta:
         model = Item
-        fields = "__all__"
         exclude = ("registration_date", "image", )

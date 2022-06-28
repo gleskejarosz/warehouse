@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>ITEMS DETAILS</h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="20%" style="vertical-align: middle;">Name</th>
+            <th scope="col" width="50%" style="vertical-align: middle;">Description</th>
+            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Category</th>
+            <th scope="col" width="6%" style="text-align: center; vertical-align: middle;">Unit</th>
+            <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Qty</th>
+        </tr>
+        <tr>
+            <td style="vertical-align: middle;">{{ item.name }} </td>
+            <td style="vertical-align: middle;">{{ item.description }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.category }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.unit }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.quantity }} </td>
+        </tr>
+        </thead>
+    </table>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="20%" style="vertical-align: middle;">Producer</th>
+            <th scope="col" width="15%" style="vertical-align: middle;">Producer no</th>
+            <th scope="col" width="20%" style="text-align: center; vertical-align: middle;">Supplier</th>
+            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Supplier no</th>
+            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Min stock</th>
+            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Min order qty</th>
+        </tr>
+        <tr>
+            <td>{{ item.producer }} </td>
+            <td>{{ item.producer_no }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.supplier }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.supplier_no }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_quantity }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_order }} </td>
+        </tr>
+        </thead>
+    </table>
+    <div>
+        {% if item.image.url is not null %}
+        <img class="picture" src="{{ item.image.url }}" alt="{{ item.name }}">
+        {% endif %}
+    </div>
+    <p><a href="{% url 'items_app:items-update-view' pk=item.pk %}">UPDATE</a></p>
+    <p><a href="{% url 'items_app:items-delete-view' pk=item.pk %}">DELETE</a></p>
+    <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
+{% endblock %}
