@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>LOCATION LIST:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="5%">ID</th>
+            <th scope="col" width="25%">Location short name</th>
+            <th scope="col" width="40%">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in location %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{% url 'locations_app:location-detail-view' pk=i.pk %}">{{ i.location }}</a></td>
+                <td>{{ i.description }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'locations_app:location-create-view' %}">ADD location</a></p>
+    {% endif %}
+    <a href="{% url 'locations_app:location-index' %}">RETURN TO DASHBOARD Location</a>
+{% endblock %}

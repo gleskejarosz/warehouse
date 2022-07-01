@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name="homepage"),
     path('admin/', admin.site.urls),
     path('items/', include('items.urls')),
+    path('locations/', include('locations.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
 ]

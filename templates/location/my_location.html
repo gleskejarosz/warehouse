@@ -1,0 +1,10 @@
+<{% extends "base.html" %}
+{% block content %}
+    <p>Location ID: {{ location.id }}</p>
+    <p>LOCATION NAME: {{ location.location }}</p>
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'locations_app:location-update-view' pk=location.pk %}">UPDATE Location</a></p>
+        <p><a href="{% url 'locations_app:location-delete-view' pk=location.pk %}">DELETE Location</a></p>
+    {% endif %}
+    <a href="{% url 'locations_app:location' %}">RETURN TO LOCATION LIST</a>
+{% endblock %}

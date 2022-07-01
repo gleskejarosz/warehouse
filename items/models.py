@@ -1,5 +1,6 @@
 from django.db import models
 from items.utils import image_resize
+from locations.models import Location
 
 
 class Category(models.Model):
@@ -29,6 +30,8 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="item_cat", blank=True, null=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(default=0)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="item_location",
+                                 blank=True, null=True)
     producer = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_prod", blank=True, null=True)
     producer_no = models.CharField(max_length=50, unique=True, blank=True, null=True)
     supplier = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_supp",
