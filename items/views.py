@@ -1,9 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
-from django.db.models import F, Q
+from django.db.models import Q
 from django.contrib.auth.decorators import (
     login_required,
     permission_required,
@@ -15,7 +14,7 @@ from items.forms import CompanyModelForm
 
 
 def items(request):
-    items_list = Item.objects.all()
+    items_list = Item.objects.all().order_by("name")
     return render(
         request,
         template_name='items/items.html',
@@ -39,7 +38,7 @@ class CompanyUpdateView(UpdateView):
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
-    exclude = ("registration_date", )
+    fields = "__all__"
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
 
@@ -192,27 +191,11 @@ class SearchResultsView(ListView):
         query = self.request.GET.get("q")
         object_list = Item.objects.filter(
             Q(name__icontains=query) | Q(description__icontains=query) |
-            Q(producer_no__icontains=query) | Q(supplier_no__icontains=query)
+            Q(producer_no__icontains=query) | Q(supplier_no__icontains=query) |
+            Q(producer__name__icontains=query) | Q(supplier__name__icontains=query) |
+            Q(category__name__icontains=query) | Q(unit__unit__icontains=query)
         ).order_by('name')
         return object_list
-
-
-def below_minimum_stock(request):
-    items_list = Item.objects.order_by('name').exclude(quantity__gte=F('minimum_quantity'))
-    page = request.GET.get('page', 1)
-
-    paginator = Paginator(items_list, 10)
-    try:
-        items_list = paginator.page(page)
-    except PageNotAnInteger:
-        items_list = paginator.page(1)
-    except EmptyPage:
-        items_list = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        template_name='items/items_below_min.html',
-        context={'items': items_list},
-    )
 
 
 def search(request):

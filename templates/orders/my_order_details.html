@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>ORDERS:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">User</th>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ order.request.user.username }}</td>
+                <td>{{ order.item }} </td>
+                <td>{{ order.quantity }} </td>
+                <td>{{ order.ordered }} </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

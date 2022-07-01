@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+  {%block content%}
+
+
+  <!--Main layout-->
+  <main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+          <h2>Order Summary</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                  <th scope="col">#</th>
+                <th scope="col">Item producer_no</th>
+                <th scope="col">Description</th>
+                <th scope="col">Supplier</th>
+                <th scope="col">Supplier no</th>
+                <th scope="col">Quantity</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% for order_item in order_summary.items.all %}
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ order_item.item.producer_no }}</td>
+                  <td>{{ order_item.item.description }}</td>
+                 <td>{{ order_item.item.supplier }}</td>
+                 <td>{{ order_item.item.supplier_no }}</td>
+                <td>
+                  {{ order_item.quantity }}
+                <a href="{% url 'orders_app:remove-single-item-from-cart' pk=order_item.item.pk %}"> - </a>
+                  /
+                <a href="{% url 'orders_app:add-to-cart' pk=order_item.item.pk %}"> + </a>
+                </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan='5'>Your order is empty</td>
+                </tr>
+
+              {% endfor %}
+
+              <tr>
+                <td colspan="6">
+                  <a class="btn btn-dark float-right " href="{% url 'items_app:search-form' %}">Continue Shopping</a>
+                  <br>
+                  <br>
+                  <br>
+                </td>
+              </tr>
+            <tr>
+                <td colspan="6">
+                  <a class="btn btn-dark float-right " href="{% url 'orders_app:complete-order' %}">Order</a>
+                </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+  {% endblock content %}
