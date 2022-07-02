@@ -2,6 +2,7 @@
 /.idea
 /__pycache__
 db.sqlite3
+/transactions/__pycache__
 
 #exclude everything
 media/items/*
