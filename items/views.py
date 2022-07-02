@@ -197,24 +197,6 @@ class SearchResultsView(ListView):
         return object_list
 
 
-def below_minimum_stock(request):
-    items_list = Item.objects.order_by('name').exclude(quantity__gte=F('minimum_quantity'))
-    page = request.GET.get('page', 1)
-
-    paginator = Paginator(items_list, 10)
-    try:
-        items_list = paginator.page(page)
-    except PageNotAnInteger:
-        items_list = paginator.page(1)
-    except EmptyPage:
-        items_list = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        template_name='items/items_below_min.html',
-        context={'items': items_list},
-    )
-
-
 def above_minimum_stock(request):
     items_list = Item.objects.order_by('-quantity').exclude(quantity__lte=0)
     page = request.GET.get('page', 1)
