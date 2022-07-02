@@ -1,16 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
 
 from items.models import Item
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
-
-    def __str__(self):
-        return self.user.username
 
 
 class Order(models.Model):
@@ -33,12 +24,3 @@ class OrderDetail(models.Model):
 
     def __str__(self):
         return f"{self.item.producer_no} x {self.quantity}"
-
-
-def userprofile_receiver(sender, instance, created, *args, **kwargs):
-    if created:
-        userprofile = UserProfile.objects.create(user=instance)
-
-
-post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
-

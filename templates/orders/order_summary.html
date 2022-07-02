@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-
-  {%block content%}
+{%block content%}
   <main>
     <div class="container">
         <div class="table-responsive text-nowrap">
@@ -14,16 +13,20 @@
                 <th scope="col">Supplier</th>
                 <th scope="col">Supplier no</th>
                 <th scope="col">Quantity</th>
-
               </tr>
             </thead>
             <tbody>
+            {% if order_summary.items.count.all == 0 %}
+              <tr>
+                <td colspan='5'>Your order is empty</td>
+              </tr>
+            {% endif %}
               <tr>
                 {% for order_item in order_summary.items.all %}
                   <th scope="row">{{ forloop.counter }}</th>
                   <td>{{ order_item.item.producer_no }}</td>
                   <td>{{ order_item.item.description }}</td>
-                 <td>{{ order_item.item.supplier }}</td>
+                 <td>{% if order_item.item.supplier %}{{ order_item.item.supplier }}{% endif %}</td>
                  <td>{{ order_item.item.supplier_no }}</td>
                 <td>
                   {{ order_item.quantity }}
@@ -36,9 +39,7 @@
                 <tr>
                   <td colspan='5'>Your order is empty</td>
                 </tr>
-
               {% endfor %}
-
               <tr>
                 <td colspan="6">
                   <a class="btn btn-dark float-right " href="{% url 'items_app:search-form' %}">Continue Shopping</a>
@@ -54,12 +55,7 @@
             </tr>
             </tbody>
           </table>
-
         </div>
-
-
-
     </div>
   </main>
-
-  {% endblock content %}
+{% endblock content %}

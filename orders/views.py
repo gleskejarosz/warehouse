@@ -1,44 +1,32 @@
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView, View
-
+from django.views.generic import DeleteView, DetailView, ListView, UpdateView, View
 
 from items.models import Item
-from orders.models import Order, OrderDetail
-
-
-# class OrderCreateView(LoginRequiredMixin, CreateView):
-#     model = Order
-#     template_name = "form.html"
-#     fields = "__all__"
-#     success_url = reverse_lazy("orders_app:orders-list-view")
-
-
-# class OrderDetailCreateView(LoginRequiredMixin, CreateView):
-#     model = OrderDetail
-#     template_name = "form.html"
-#     fields = "__all__"
-#     success_url = reverse_lazy("orders_app:order-details-list-view")
+from .models import Order, OrderDetail
 
 
 class OrderUpdateView(LoginRequiredMixin, UpdateView):
     model = Order
-    fields = "__all__"
+    fields = ("ordered",)
     template_name = "form.html"
     success_url = reverse_lazy("orders_app:orders-list-view")
 
-
-# class OrderDetailUpdateView(LoginRequiredMixin, UpdateView):
-#     model = OrderDetail
-#     fields = "__all__"
-#     template_name = "form.html"
-#     success_url = reverse_lazy("orders_app:order-details-list-view")
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.ordered = False
+        if not self.object.ordered:
+            order_items = self.object.items.all()
+            order_items.update(ordered=False)
+            for item in order_items:
+                item.save()
+        return super().post(request, *args, **kwargs)
 
 
 class OrderDeleteView(LoginRequiredMixin, DeleteView):
@@ -47,20 +35,9 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("orders_app:orders-list-view")
 
 
-# class OrderDetailDeleteView(LoginRequiredMixin, DeleteView):
-#     model = OrderDetail
-#     template_name = "items/delete.html"
-#     success_url = reverse_lazy("orders_app:order-details-list-view")
-
-
 class OrderDetailView(DetailView):
     model = Order
     template_name = "orders/my_order.html"
-
-
-# class Order2DetailView(DetailView):
-#     model = OrderDetail
-#     template_name = "orders/my_order_details.html"
 
 
 class OrderListView(ListView):
@@ -71,10 +48,6 @@ class OrderListView(ListView):
         ordering = self.request.GET.get("ordering", "-order_date")
         return ordering
 
-
-# class OrderDetailsListView(ListView):
-#     template_name = "orders/order_details.html"
-#     model = OrderDetail
 
 @login_required
 def orders(request):
@@ -89,7 +62,7 @@ def order_details(request):
     return render(
         request,
         template_name="orders/order_details.html",
-        context={"object_list": OrderDetail.objects.all()},
+        context={"object_list": OrderDetail.objects.all().order_by("-item")},
     )
 
 
@@ -111,7 +84,9 @@ class OrderSummary(LoginRequiredMixin, View):
                           },
                           )
         except ObjectDoesNotExist:
-             return redirect("/")
+            return render(self.request,
+                          template_name='orders/order_summary.html',
+                          )
 
 
 @login_required
@@ -204,4 +179,17 @@ def below_minimum_stock(request):
         request,
         template_name='orders/items_below_min.html',
         context={'items': items_list},
+    )
+
+
+def frequently_ordered(request):
+    from django.db.models import Sum
+    object_list = OrderDetail.objects.filter(ordered="True").values(
+        "item__producer_no").annotate(total_quantity=Sum("quantity")).order_by("-total_quantity")[:10]
+    return render(
+        request,
+        template_name="orders/frequently_ordered.html",
+        context={
+            "object_list": object_list,
+        },
     )

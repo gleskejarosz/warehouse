@@ -19,7 +19,7 @@
                 Item no: {{ forloop.counter }}
                 <ul>
                     <li> {{ ele }} </li>
-                    <li> Supplier: {{ ele.item.supplier }} </li>
+                    <li> Supplier: {% if ele.item.supplier %}{{ ele.item.supplier }}{% endif %}</li>
                     <li> Supplier no: {{ ele.item.supplier_no }} </li>
                 </ul>
                 {% endfor %}
