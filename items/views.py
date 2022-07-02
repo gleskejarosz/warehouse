@@ -82,11 +82,6 @@ class ItemDetailView(DetailView):
     template_name = "items/my_item.html"
 
 
-class ItemDetailTransactionView(DetailView):
-    model = Item
-    template_name = "items/my_item.html"
-
-
 class CompanyListView(ListView):
     template_name = "items/companies.html"
     model = Company

@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <p>Welcome, {{ user }}!</p>
+{% if not user.is_authenticated %}
+        <p>Hello stranger!!</p>
+    {% else %}
+       <p>Welcome, {{ user }} !!</p>
+    {% endif %}
     <p><a href="{% url 'items_app:items-index' %}">ITEMS</a></p>
-   {% endblock %}
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'transaction_app:transaction-list' %}">TRANSACTIONS</a></p>
+    {% endif %}
+{% endblock %}

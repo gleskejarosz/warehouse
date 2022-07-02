@@ -1,5 +1,6 @@
 from django.db import models
 from items.utils import image_resize
+from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
@@ -28,7 +29,7 @@ class Item(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="item_cat", blank=True, null=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=True, null=True)
-    quantity = models.PositiveSmallIntegerField(default=0)
+    quantity = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     producer = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_prod", blank=True, null=True)
     producer_no = models.CharField(max_length=50, unique=True, blank=True)
     supplier = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_supp",
@@ -47,25 +48,29 @@ class Item(models.Model):
 
     ''' Operations on items for warehouse workers and managers.'''
 
-    def input_to_stock(self, amount: float):
-        if amount > 0:
-            self.quantity += amount
 
-    def return_to_stock(self, amount: float):
-        if amount > 0:
-            self.quantity += amount
+def input_to_stock(self, amount: float):
+    if amount > 0:
+        self.quantity += amount
 
-    def scrap(self, amount: float):
-        if amount > 0:
-            self.quantity += amount
 
-    def total_scrap(self, amount: float):
-        if amount > 0:
-            self.quantity += amount
+def withdraw(self, amount: float):
+    if amount > 0:
+        self.quantity -= amount
 
-    def withdraw(self, amount: float):
-        if amount > 0:
-            self.quantity -= amount
+
+def total_scrap(self):
+    self.quantity = 0
+
+
+def scrap(self, amount: float):
+    if amount > 0:
+        self.quantity -= amount
+
+
+def return_to_stock(self, amount: float):
+    if amount > 0:
+        self.quantity += amount
 
 
 

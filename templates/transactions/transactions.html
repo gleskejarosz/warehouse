@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Transactions:</h3>
+    {% for t in transactions %}
+        <a href="{% url 'transaction_app:transaction' trans=t.name%}"><h5> >>{{t.name }}<< </h5></a>
+    {% endfor %}
+    <a href="{% url 'homepage' %}">RETURN</a>
+{% endblock %}

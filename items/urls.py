@@ -41,3 +41,4 @@ urlpatterns = [
     path('category/index/', views.index, name="index"),
     path('category/', views.category, name="category"),
 ]
+

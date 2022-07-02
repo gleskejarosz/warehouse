@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h3>Item to {{ transaction.name }}</h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="15%" style="vertical-align: middle;">Name</th>
+            <th scope="col" width="6%" style="text-align: center; vertical-align: middle;">Producer</th>
+            <th scope="col" width="11%" style="text-align: center; vertical-align: middle;">Producer no</th>
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Supplier</th>
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Qty</th>
+            <th scope="col" width="4%" style="text-align: center; vertical-align: middle;">Unit</th>
+            <th scope="col" width="14%" style="text-align: center; vertical-align: middle;">Category</th>
+
+        </tr>
+        <tr>
+            <td style="vertical-align: middle;">{{ item.name }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.producer }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.producer_no }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.supplier }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.quantity }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.unit }} </td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.category }} </td>
+
+        </tr>
+        </thead>
+    </table>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+            <input type="submit" value={{ transaction.name }}>
+
+
+
+    </form>
+    <p></p>
+    <a href="{% url 'transaction_app:transaction' trans=transaction.name  %}">RETURN </a>
+{% endblock %}
