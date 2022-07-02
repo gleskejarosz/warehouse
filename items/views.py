@@ -2,6 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
+from django.db.models import F, Q
+
 from django.db.models import Q
 from django.contrib.auth.decorators import (
     login_required,
@@ -39,6 +41,7 @@ class CompanyUpdateView(UpdateView):
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
     fields = "__all__"
+    exclude = ("registration_date", )
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
 
@@ -103,8 +106,6 @@ def index(request):
     )
 
 
-@permission_required("units.view_units", raise_exception=True)
-@login_required
 def units(request):
     return render(
         request,
@@ -113,14 +114,14 @@ def units(request):
     )
 
 
-class UnitCreateView(CreateView):
+class UnitCreateView(LoginRequiredMixin, CreateView):
     model = Unit
     template_name = "form.html"
     fields = "__all__"
     success_url = reverse_lazy("items_app:units-list-view")
 
 
-class UnitDeleteView(DeleteView):
+class UnitDeleteView(LoginRequiredMixin, DeleteView):
     model = Unit
     template_name = "units/delete_units.html"
     success_url = reverse_lazy("items_app:units-list-view")
@@ -136,15 +137,13 @@ class UnitListView(ListView):
     template_name = "units/list_view_units.html"
 
 
-class UnitUpdateView(UpdateView):
+class UnitUpdateView(LoginRequiredMixin, UpdateView):
     model = Unit
     fields = ("unit", "description")
     template_name = "form.html"
     success_url = reverse_lazy("items_app:units-list-view")
 
 
-@permission_required("units.view_category", raise_exception=True)
-@login_required
 def category(request):
     return render(
         request,
@@ -153,14 +152,14 @@ def category(request):
     )
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     template_name = "form.html"
     fields = "__all__"
     success_url = reverse_lazy("items_app:category-list-view")
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     template_name = "category/delete_category.html"
     success_url = reverse_lazy("items_app:category-list-view")
@@ -176,7 +175,7 @@ class CategoryListView(ListView):
     template_name = "category/list_view_category.html"
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     fields = ("name", "description")
     template_name = "form.html"
@@ -196,6 +195,42 @@ class SearchResultsView(ListView):
             Q(category__name__icontains=query) | Q(unit__unit__icontains=query)
         ).order_by('name')
         return object_list
+
+
+def below_minimum_stock(request):
+    items_list = Item.objects.order_by('name').exclude(quantity__gte=F('minimum_quantity'))
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items_list, 10)
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        template_name='items/items_below_min.html',
+        context={'items': items_list},
+    )
+
+
+def above_minimum_stock(request):
+    items_list = Item.objects.order_by('-quantity').exclude(quantity__lte=0)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items_list, 10)
+    try:
+        items_list = paginator.page(page)
+    except PageNotAnInteger:
+        items_list = paginator.page(1)
+    except EmptyPage:
+        items_list = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        template_name='items/items_above_min.html',
+        context={'items': items_list},
+    )
 
 
 def search(request):
