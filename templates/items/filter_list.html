@@ -68,12 +68,12 @@
         <tr>
           <td><a href="{% url 'items_app:items-detail-view' pk=item.pk %}">{{ item.name }}</a></td>
           <td>{{ item.description }}</td>
-          <td>{{ item.category }}</td>
-          <td>{{ item.unit }}</td>
+          <td>{% if item.category %}{{ item.category }}{% endif %}</td>
+          <td>{% if item.unit %}{{ item.unit }}{% endif %}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.producer }}</td>
+          <td>{% if item.producer %}{{ item.producer }}{% endif %}</td>
           <td>{{ item.producer_no }}</td>
-          <td>{{ item.supplier }}</td>
+          <td>{% if item.supplier %}{{ item.supplier }}{% endif %}</td>
           <td>{{ item.supplier_no }}</td>
         </tr>
       {% empty %}
