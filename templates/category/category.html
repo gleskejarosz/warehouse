@@ -19,6 +19,8 @@
         {% endfor %}
         </tbody>
     </table>
-    <p><a href="{% url 'items_app:category-create-view' %}">ADD category</a></p>
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'items_app:category-create-view' %}">ADD category</a></p>
+    {% endif %}
     <a href="{% url 'items_app:items-index' %}">RETURN TO DASHBOARD</a>
 {% endblock %}

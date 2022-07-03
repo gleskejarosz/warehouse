@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from items.utils import image_resize
 from django.core.validators import MinValueValidator
 
@@ -31,19 +33,35 @@ class Item(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=True, null=True)
     quantity = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     producer = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_prod", blank=True, null=True)
-    producer_no = models.CharField(max_length=50, unique=True, blank=True)
+    producer_no = models.CharField(max_length=50, unique=True, blank=True, null=True)
     supplier = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_supp",
                                  blank=True, null=True)
     supplier_no = models.CharField(max_length=50, blank=True)
     minimum_quantity = models.PositiveSmallIntegerField(default=1)
     minimum_order = models.PositiveSmallIntegerField(default=0)
-    image = models.ImageField(upload_to='items/', default="items/default.png", blank=True)
+    image = models.ImageField(upload_to='items/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.producer} - {self.name}"
+        return f"{self.producer_no}"
+
+    def get_absolute_url(self):
+        return reverse("items_app:items-detail-view", kwargs={
+            'pk': self.pk
+        })
+
+    def get_add_to_cart_url(self):
+        return reverse("orders_app:add-to-cart", kwargs={
+            'pk': self.pk
+        })
+
+    def get_remove_from_cart_url(self):
+        return reverse("orders_app:remove-from-cart", kwargs={
+            'pk': self.pk
+        })
 
     def save(self, *args, **kwargs):
-        image_resize(self.image, 1000, 800)
+        if self.image:
+            image_resize(self.image, 1000, 800)
         super().save(*args, **kwargs)
 
 

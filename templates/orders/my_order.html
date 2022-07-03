@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>ORDERS:</h1>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Order date</th>
+            <th scope="col">Items</th>
+            <th scope="col">Ordered by</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.order_date|date:"d M, Y" }} </td>
+            <td>{% for ele in order.items.all %}
+                Item no: {{ forloop.counter }}
+                <ul>
+                    <li> {{ ele }} </li>
+                    <li> Supplier: {% if ele.item.supplier %}{{ ele.item.supplier }}{% endif %}</li>
+                    <li> Supplier no: {{ ele.item.supplier_no }} </li>
+                </ul>
+                {% endfor %}
+            </td>
+            <td>{{ order.user.username }} </td>
+            {% if order.ordered == True %}
+                <td> Order placed </td>
+                {% else %}
+                    <td> In preparation </td>
+            {% endif %}
+        </tr>
+        </tbody>
+    </table>
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'orders_app:orders-update-view' pk=order.pk %}">UPDATE ORDER</a></p>
+        <p><a href="{% url 'orders_app:orders-delete-view' pk=order.pk %}">DELETE ORDER</a></p>
+    {% endif %}
+{% endblock %}

@@ -9,4 +9,6 @@
     {% if user.is_authenticated %}
         <p><a href="{% url 'transaction_app:transaction-list' %}">TRANSACTIONS</a></p>
     {% endif %}
-{% endblock %}
+
+    <p><a href="{% url 'orders_app:orders-index' %}">ORDERS</a></p>
+   {% endblock %}

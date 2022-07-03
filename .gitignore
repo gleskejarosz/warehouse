@@ -8,7 +8,7 @@ db.sqlite3
 media/items/*
 
 #exception to the rule
-!/media/items/default.png
+!/media/items/gitkeep.txt
 
 /static/
 
