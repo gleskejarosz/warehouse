@@ -3,7 +3,7 @@ from django.views import View
 # from django.views.generic import DetailView
 from items.models import Item, input_to_stock, withdraw, total_scrap, scrap, return_to_stock
 
-from transactions.models import TransactionType
+from transactions.models import TransactionType, TransactionArchive
 from transactions.forms import ItemTransactionFilter, AmountTransactionForm
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -105,46 +105,66 @@ def confirmation_on_item(request, pk, trans, amount):
         template_name='transactions/confirmation.html',
         context={
             'item': item,
-            'transt': trans,
+            'trans': trans,
             'amount': amount
         }
     )
 
 
-def transaction_error(request, trans):
-    pass
+def transaction_error(request, pk, trans, amount):
+    item = get_object_or_404(Item, pk=pk)
+    return render(
+        request,
+        template_name='transactions/confirmation.html',
+        context={
+            'item': item,
+            'trans': trans,
+            'amount': amount
+        }
+    )
+
+
+def archive_transaction(item, transaction, quantity, after):
+    TransactionArchive.objects.create(
+        transaction=transaction,
+        item=item,
+        quantity=quantity,
+        quantity_after=after
+    )
 
 
 def transaction_on_item(request, pk, trans, amount):
     item = get_object_or_404(Item, pk=pk)
     trans = get_object_or_404(TransactionType, name=trans)
+    q_before = get_object_or_404(Item, pk=pk).quantity
 
     if trans.name == 'Input':
         input_to_stock(item, amount=int(amount))
         item.save()
-        return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
     if trans.name == 'Withdraw':
         withdraw(item, amount=int(amount))
         item.save()
-        return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
     if trans.name == 'Total Scrap':
         total_scrap(item)
         item.save()
-        return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
     if trans.name == 'Scrap':
         scrap(item, amount=int(amount))
         item.save()
-        return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
     if trans.name == 'Return to stock':
         return_to_stock(item, amount=int(amount))
         item.save()
+
+    q_after = get_object_or_404(Item, pk=pk).quantity
+
+    if q_after != q_before:
+        archive_transaction(item=item, transaction=trans, quantity=amount, after=q_after)
         return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
-    return HttpResponseRedirect(reverse("transaction_app:transaction_error", args={trans.name}))
+    return HttpResponseRedirect(reverse("transaction_app:transaction_error", args={trans.name, pk, amount}))
 
 
 

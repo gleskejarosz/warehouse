@@ -1,8 +1,8 @@
 /venv
 /.idea
-/__pycache__
+*/__pycache__/*
+*__pycache__/*
 db.sqlite3
-/transactions/__pycache__
 
 #exclude everything
 media/items/*

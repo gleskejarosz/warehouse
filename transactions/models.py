@@ -30,8 +30,8 @@ class TransactionArchive(models.Model):
     )
     quantity = models.FloatField()
     quantity_after = models.FloatField(blank=True, null=True)
-    # who = CurrentUserField()
-    who = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    who = models.CharField(default=CurrentUserField(), max_length=64)
+    # who = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     when = models.DateTimeField(auto_now_add=True)
 
 

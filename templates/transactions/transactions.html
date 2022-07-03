@@ -4,5 +4,9 @@
     {% for t in transactions %}
         <a href="{% url 'transaction_app:transaction' trans=t.name%}"><h5> >>{{t.name }}<< </h5></a>
     {% endfor %}
-    <a href="{% url 'homepage' %}">RETURN</a>
+    <a href="{% url 'homepage' %}">
+        <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Return
+        </button>
+    </a>
 {% endblock %}

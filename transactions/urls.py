@@ -10,7 +10,7 @@ urlpatterns = [
     path('transaction/<str:trans>/item/<pk>', views.item_transaction_detail, name="transaction-item"),
     path('transaction/confirmation/<str:trans>/item/<pk>/<amount>/', views.confirmation_on_item, name="confirmation"),
     path('transaction/<str:trans>/item/<pk>/<amount>/', views.transaction_on_item, name="trans_on_item"),
-    path('transaction/tranaction_error/<str:trans>', views.transaction_error, name="transaction_error")
+    path('transaction/tranaction_error/<str:trans>/<pk>/<amount>', views.transaction_error, name="transaction_error")
 
 
 

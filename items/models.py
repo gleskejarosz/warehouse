@@ -46,7 +46,8 @@ class Item(models.Model):
         image_resize(self.image, 1000, 800)
         super().save(*args, **kwargs)
 
-    ''' Operations on items for warehouse workers and managers.'''
+
+''' Operations on items for warehouse workers and managers.'''
 
 
 def input_to_stock(self, amount: float):
@@ -55,7 +56,7 @@ def input_to_stock(self, amount: float):
 
 
 def withdraw(self, amount: float):
-    if amount > 0:
+    if 0 < amount <= self.quantity:
         self.quantity -= amount
 
 
@@ -64,14 +65,13 @@ def total_scrap(self):
 
 
 def scrap(self, amount: float):
-    if amount > 0:
+    if 0 < amount <= self.quantity:
         self.quantity -= amount
 
 
 def return_to_stock(self, amount: float):
     if amount > 0:
         self.quantity += amount
-
 
 
 class Company(models.Model):

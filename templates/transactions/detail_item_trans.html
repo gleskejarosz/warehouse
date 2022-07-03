@@ -28,12 +28,18 @@
     </table>
     <form method="post">
         {% csrf_token %}
-        {{ form }}
+        {% if transaction.name != 'Total Scrap' %}
+            {{ form }}
             <input type="submit" value={{ transaction.name }}>
+        {% else %}
+            <input type="button" value={{ transaction.name }}>
 
-
-
+        {% endif %}
     </form>
     <p></p>
-    <a href="{% url 'transaction_app:transaction' trans=transaction.name  %}">RETURN </a>
+    <a href="{% url 'transaction_app:transaction' trans=transaction.name  %}">
+        <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Return
+        </button>
+    </a>
 {% endblock %}

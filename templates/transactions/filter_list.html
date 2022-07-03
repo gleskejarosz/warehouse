@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% block content %}
+<a href="{% url 'transaction_app:transaction-list' %}">
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Return
+    </button>
+</a>
 <h3>Find Item to {{ trans }}:</h3>
 <form method="get">
     <div class="well">

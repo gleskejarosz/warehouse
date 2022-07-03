@@ -8,13 +8,12 @@
             <a href="{% url 'transaction_app:trans_on_item' trans=trans.name amount=amount pk=item.pk %}">
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon glyphicon-search"></span> confirm
-                </button>
+                </button></a>
             <a href="{{ request.META.HTTP_REFERER }}">
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon glyphicon-search"></span> discard
-                </button>
-            </a>
-        </div>
+                </button></a>
+            </div>
         <p></p>
-    <a href="{% url 'homepage' %}">RETURN</a>
+        <p></p>
 {% endblock %}
