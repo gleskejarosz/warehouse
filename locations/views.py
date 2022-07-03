@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
 
+from items.models import Item
 from locations.models import Location
 
 
@@ -53,7 +54,7 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
 
 
 def location_with_stock(request):
-    locations_list = Location.objects.order_by('location').exclude(item_location=0)
+    locations_list = Item.objects.order_by('location').exclude(location=None)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(locations_list, 10)

@@ -4,22 +4,19 @@
     <table class="table table-hover">
         <thead>
         <tr>
-{#            <th scope="col" width="5%">No</th>#}
             <th scope="col" width="15%">Name</th>
-            <th scope="col" width="53%">Description</th>
-{#            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Unit</th>#}
-            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Quantity</th>
+            <th scope="col" width="53%">Description Item</th>
+            <th scope="col" width="4%">Quantity</th>
+            <th scope="col" width="3%" style="text-align: center; vertical-align: middle;">Location</th>
         </tr>
         </thead>
         <tbody>
-        {% for i in location %}
+        {% for i in items %}
             <tr>
                 <th scope="row" style="vertical-align: middle;">{{ forloop.counter }}</th>
-                <td style="vertical-align: middle;">
-                    <a href="{% url 'locations_app:location-detail-view' pk=i.pk %}">{{ i.location }}</a></td>
                 <td>{{ i.description }} </td>
-{#                <td style="text-align: center; vertical-align: middle;">{{ i.unit }} </td>#}
-                <td style="text-align: center; vertical-align: middle;">{{ i.location }} </td>
+                <td>{{ i.quantity }} </td>
+                <td style="vertical-align: middle;">{{ i.location }}</td>
             </tr>
         {% endfor %}
         </tbody>
