@@ -14,7 +14,7 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{% url 'locations_app:location-detail-view' pk=i.pk %}">{{ i.location }}</a></td>
-                <td>{{ i.description }} </td>
+                <td> {{ i.description }} </td>
             </tr>
         {% endfor %}
         </tbody>

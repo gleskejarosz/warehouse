@@ -2,8 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
-from django.db.models import F
+from django.views.generic import ListView, DeleteView, UpdateView, DetailView, CreateView
 
 from locations.models import Location
 
@@ -54,10 +53,7 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
 
 
 def location_with_stock(request):
-    # locations_list = Location.objects.order_by('quantity')
-    # locations_list = Location.objects.order_by('location').exclude(quantity__lte=0)
-    # items_list = Item.objects.order_by('name').exclude(quantity__gte=F('minimum_quantity'))
-    locations_list = Location.objects.order_by('location').exclude(quantity__gte=F('quantity'))
+    locations_list = Location.objects.order_by('location').exclude(item_location=0)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(locations_list, 10)
