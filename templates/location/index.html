@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+    <p><a href="{% url 'locations_app:location' %}">LOCATION LIST</a></p>
+    <p><a href="{% url 'locations_app:location-with-stock' %}">LOCATION WITH STOCK</a></p>
+{% endblock %}

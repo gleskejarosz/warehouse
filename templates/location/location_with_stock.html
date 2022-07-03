@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>LOCATION WITH STOCK:</h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+{#            <th scope="col" width="5%">No</th>#}
+            <th scope="col" width="15%">Name</th>
+            <th scope="col" width="53%">Description</th>
+{#            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Unit</th>#}
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in location %}
+            <tr>
+                <th scope="row" style="vertical-align: middle;">{{ forloop.counter }}</th>
+                <td style="vertical-align: middle;">
+                    <a href="{% url 'locations_app:location-detail-view' pk=i.pk %}">{{ i.location }}</a></td>
+                <td>{{ i.description }} </td>
+{#                <td style="text-align: center; vertical-align: middle;">{{ i.unit }} </td>#}
+                <td style="text-align: center; vertical-align: middle;">{{ i.location }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<br>
+
+{% if location.has_other_pages %}
+  <ul class="pagination">
+    {% if location.has_previous %}
+      <li><a href="?page={{ location.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in location.paginator.page_range %}
+      {% if location.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if location.has_next %}
+      <li><a href="?page={{ location.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+    <a href="{% url 'locations_app:location-index' %}">RETURN TO DASHBOARD</a>
+{% endblock %}
+
