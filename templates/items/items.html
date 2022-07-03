@@ -23,8 +23,8 @@
                 <td style="vertical-align: middle;">
                     <a href="{% url 'items_app:items-detail-view' pk=i.pk %}">{{ i.name }}</a></td>
                 <td>{{ i.description }} </td>
-                <td style="text-align: center; vertical-align: middle;">{{ i.producer }} </td>
-                <td style="text-align: center; vertical-align: middle;">{{ i.unit }} </td>
+                <td style="text-align: center; vertical-align: middle;">{% if i.producer %}{{ i.producer }}{% endif %}</td>
+                <td style="text-align: center; vertical-align: middle;">{% if i.unit %}{{ i.unit }}{% endif %}</td>
                 <td style="text-align: center; vertical-align: middle;">{{ i.quantity }} </td>
             </tr>
         {% endfor %}

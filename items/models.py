@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 from items.utils import image_resize
 from locations.models import Location
 
@@ -42,7 +44,22 @@ class Item(models.Model):
     image = models.ImageField(upload_to='items/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.producer} - {self.name}"
+        return f"{self.producer_no}"
+
+    def get_absolute_url(self):
+        return reverse("items_app:items-detail-view", kwargs={
+            'pk': self.pk
+        })
+
+    def get_add_to_cart_url(self):
+        return reverse("orders_app:add-to-cart", kwargs={
+            'pk': self.pk
+        })
+
+    def get_remove_from_cart_url(self):
+        return reverse("orders_app:remove-from-cart", kwargs={
+            'pk': self.pk
+        })
 
     def save(self, *args, **kwargs):
         if self.image:

@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <h3>ITEMS DETAILS</h3>
+            <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+              Add to order
+              <i class="fas fa-shopping-cart ml-1"></i>
+            </a>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -11,11 +15,11 @@
             <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Qty</th>
         </tr>
         <tr>
-            <td style="vertical-align: middle;">{{ item.name }} </td>
-            <td style="vertical-align: middle;">{{ item.description }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.category }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.unit }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.quantity }} </td>
+            <td style="vertical-align: middle;">{{ item.name }}</td>
+            <td style="vertical-align: middle;">{{ item.description }}</td>
+            <td style="text-align: center; vertical-align: middle;">{% if item.category %}{{ item.category }}{% endif %}</td>
+            <td style="text-align: center; vertical-align: middle;">{% if item.unit %}{{ item.unit }}{% endif %}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.quantity }}</td>
         </tr>
         </thead>
     </table>
@@ -30,12 +34,12 @@
             <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Min order qty</th>
         </tr>
         <tr>
-            <td>{{ item.producer }} </td>
-            <td>{{ item.producer_no }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.supplier }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.supplier_no }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_quantity }} </td>
-            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_order }} </td>
+            <td>{% if item.producer %}{{ item.producer }}{% endif %}</td>
+            <td>{{ item.producer_no }}</td>
+            <td style="text-align: center; vertical-align: middle;">{% if item.supplier %}{{ item.supplier }}{% endif %}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.supplier_no }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_quantity }}</td>
+            <td style="text-align: center; vertical-align: middle;">{{ item.minimum_order }}</td>
         </tr>
         </thead>
     </table>

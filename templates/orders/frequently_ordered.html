@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>ITEMS FREQUENTLY ORDERED:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Item No</th>
+            <th scope="col">Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in object_list %}
+            <tr>
+                <td>{{ item.item__producer_no }}</td>
+                <td>{{ item.total_quantity }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
