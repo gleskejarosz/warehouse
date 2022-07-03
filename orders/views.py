@@ -16,7 +16,7 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
     model = Order
     fields = ("ordered",)
     template_name = "form.html"
-    success_url = reverse_lazy("orders_app:orders-list-view")
+    success_url = reverse_lazy("orders_app:active-orders")
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -150,7 +150,7 @@ def complete_order(request):
     order.ordered = True
     order.save()
 
-    return redirect("orders_app:order-summary")
+    return redirect("homepage")
 
 
 @login_required
