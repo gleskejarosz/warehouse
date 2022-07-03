@@ -19,13 +19,15 @@
                 <td style="vertical-align: middle;">
                     <a href="{% url 'items_app:items-detail-view' pk=o.pk %}">{{ o.name }}</a></td>
                 <td>{{ o.description }} </td>
-                <td style="text-align: center; vertical-align: middle;">{{ o.producer }} </td>
-                <td style="text-align: center; vertical-align: middle;">{{ o.unit }} </td>
+                <td style="text-align: center; vertical-align: middle;">{% if o.producer %}{{ o.producer }}{% endif %}</td>
+                <td style="text-align: center; vertical-align: middle;">{% if o.unit %}{{ o.unit }}{% endif %} </td>
                 <td style="text-align: center; vertical-align: middle;">{{ o.quantity }} </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    {% if request.user.is_staff %}
+        <p><a href="{% url 'items_app:items-create-view' %}">ADD ITEM</a></p>
+    {% endif %}
     <a href="{% url 'items_app:index' %}">RETURN TO INDEX PAGE</a>
 {% endblock %}

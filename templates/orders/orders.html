@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>ALL ORDERS:</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Order date</th>
+            <th scope="col">Ordered by</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in object_list %}
+            <tr>
+                <td><a href="{% url 'orders_app:orders-detail-view' pk=order.pk %}">{{ order.id }}</a></td>
+                <td>{{ order.order_date|date:"d M, Y" }} </td>
+                <td>{{ order.user.username }} </td>
+                {% if order.ordered == True %}
+                <td> Order placed </td>
+                {% else %}
+                <td> In preparation </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
