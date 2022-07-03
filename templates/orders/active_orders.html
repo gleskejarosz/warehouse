@@ -13,7 +13,7 @@
         <tbody>
         {% for order in object_list %}
             <tr>
-                <td><a href="{% url 'orders_app:orders-detail-view' pk=order.pk %}">{{ order.id }}</a></td>
+                <td><a href="{% url 'orders_app:active-orders-detail-view' pk=order.pk %}">{{ order.id }}</a></td>
                 <td>{{ order.order_date|date:"d M, Y" }} </td>
                 <td>{{ order.user.username }} </td>
                 {% if order.ordered == True %}

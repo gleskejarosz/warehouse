@@ -1,18 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
-from django.db.models import F, Q
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
-from django.contrib.auth.decorators import (
-    login_required,
-    permission_required,
-)
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
 
+from .forms import CompanyModelForm
+from .models import Company, Item, Unit, Category
 from .filters import ItemFilter
-from items.models import Company, Item, Unit, Category
-from items.forms import CompanyModelForm
 
 
 def items(request):

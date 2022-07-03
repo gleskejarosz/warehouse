@@ -21,11 +21,10 @@ class OrderUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.ordered = False
-        if not self.object.ordered:
-            order_items = self.object.items.all()
-            order_items.update(ordered=False)
-            for item in order_items:
-                item.save()
+        order_items = self.object.items.all()
+        order_items.update(ordered=False)
+        for item in order_items:
+            item.save()
         return super().post(request, *args, **kwargs)
 
 
@@ -38,6 +37,11 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
 class OrderDetailView(DetailView):
     model = Order
     template_name = "orders/my_order.html"
+
+
+class ActiveOrderDetailView(DetailView):
+    model = Order
+    template_name = "orders/my_active_order.html"
 
 
 class OrderListView(ListView):
@@ -123,7 +127,9 @@ def remove_single_item_from_cart(request, pk):
             if order_item.quantity > 1:
                 order_item.quantity -= 1
             else:
+                order_item.quantity -= 1
                 order.items.remove(order_item)
+                order_item.ordered = True
             order_item.save()
 
             return redirect("orders_app:order-summary")

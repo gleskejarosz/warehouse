@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from orders.models import Order, OrderDetail
+from .models import Order, OrderDetail
 
 
 class OrderAdmin(admin.ModelAdmin):

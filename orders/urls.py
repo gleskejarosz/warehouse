@@ -10,6 +10,7 @@ urlpatterns = [
     path("orders-update-view/<pk>/", views.OrderUpdateView.as_view(), name="orders-update-view"),
     path("orders-delete-view/<pk>/", views.OrderDeleteView.as_view(), name="orders-delete-view"),
     path("orders-detail-view/<pk>/", views.OrderDetailView.as_view(), name="orders-detail-view"),
+    path("active-orders-detail-view/<pk>/", views.ActiveOrderDetailView.as_view(), name="active-orders-detail-view"),
     path("orders-list-view/", views.OrderListView.as_view(), name="orders-list-view"),
     path("orders/", views.orders, name="orders"),
     path("order-details", views.order_details, name="order-details"),
