@@ -1,12 +1,12 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.views import View
-# from django.views.generic import DetailView
 from items.models import Item, input_to_stock, withdraw, total_scrap, scrap, return_to_stock
 
 from transactions.models import TransactionType, TransactionArchive
 from transactions.forms import ItemTransactionFilter, AmountTransactionForm
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from transactions.__const__ import TRANSACTION_TYPES
 
 
 def transactions(request):
@@ -37,11 +37,6 @@ class ItemTransactionView(View):
         )
 
 
-# class ItemTransactionDetail(DetailView):
-#     model = Item
-#     template_name = 'transactions/detail_item_trans.html'
-
-
 class ItemTransactionDetail(View):
     def get(self, request, pk, trans):
         item = get_object_or_404(Item, pk=pk)
@@ -59,17 +54,18 @@ class ItemTransactionDetail(View):
 def search_item(request, trans: str):
     items_list = Item.objects.all().order_by('-registration_date')
     items_filter = ItemTransactionFilter(request.GET, queryset=items_list)
+    transaction = get_object_or_404(TransactionType, name=trans)
     return render(
         request,
         template_name='transactions/filter_list.html',
         context={
             'filter': items_filter,
-            'trans': trans
+            'trans': transaction
         }
     )
 
 
-def item_transaction_detail(request, pk, trans):
+def item_transaction_detail(request, trans, pk):
     form = AmountTransactionForm(request.POST or None)
     item = get_object_or_404(Item, pk=pk)
     transaction = get_object_or_404(TransactionType, name=trans)
@@ -91,7 +87,7 @@ def item_transaction_detail(request, pk, trans):
         template_name='transactions/detail_item_trans.html',
         context={
             'item': item,
-            'transaction': transaction,
+            'trans': transaction,
             'form': form
         }
     )
@@ -113,23 +109,31 @@ def confirmation_on_item(request, pk, trans, amount):
 
 def transaction_error(request, pk, trans, amount):
     item = get_object_or_404(Item, pk=pk)
+
+    message = "Action forbidden."
+
+    if trans.name == "Withdraw":
+        message = "Probably you want to withdraw more than stock has."
+
     return render(
         request,
-        template_name='transactions/confirmation.html',
+        template_name='transactions/error.html',
         context={
             'item': item,
             'trans': trans,
-            'amount': amount
+            'amount': amount,
+            'message': message
         }
     )
 
 
-def archive_transaction(item, transaction, quantity, after):
+def archive_transaction(request, item, transaction, quantity, after):
     TransactionArchive.objects.create(
-        transaction=transaction,
+        transaction=transaction.name,
         item=item,
         quantity=quantity,
-        quantity_after=after
+        quantity_after=after,
+        who=request.user.username
     )
 
 
@@ -139,11 +143,11 @@ def transaction_on_item(request, pk, trans, amount):
     q_before = get_object_or_404(Item, pk=pk).quantity
 
     if trans.name == 'Input':
-        input_to_stock(item, amount=int(amount))
+        input_to_stock(item, amount=float(amount))
         item.save()
 
     if trans.name == 'Withdraw':
-        withdraw(item, amount=int(amount))
+        withdraw(item, amount=float(amount))
         item.save()
 
     if trans.name == 'Total Scrap':
@@ -151,22 +155,23 @@ def transaction_on_item(request, pk, trans, amount):
         item.save()
 
     if trans.name == 'Scrap':
-        scrap(item, amount=int(amount))
+        scrap(item, amount=float(amount))
         item.save()
 
     if trans.name == 'Return to stock':
-        return_to_stock(item, amount=int(amount))
+        return_to_stock(item, amount=float(amount))
         item.save()
 
     q_after = get_object_or_404(Item, pk=pk).quantity
 
     if q_after != q_before:
-        archive_transaction(item=item, transaction=trans, quantity=amount, after=q_after)
+        archive_transaction(request=request, item=item, transaction=trans, quantity=amount, after=q_after)
         return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
 
-    return HttpResponseRedirect(reverse("transaction_app:transaction_error", args={trans.name, pk, amount}))
+    return transaction_error(request, pk, trans, amount)
 
 
-
-
-
+def transactions_initialize(request):
+    for transaction in TRANSACTION_TYPES:
+        TransactionType.objects.create(name=transaction[0], description=transaction[1])
+    return HttpResponseRedirect(reverse("transaction_app:transaction-list"))

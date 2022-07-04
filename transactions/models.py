@@ -1,8 +1,4 @@
-from django.conf import settings
 from django.db import models
-from django.views.generic import DetailView
-from django_currentuser.db.models import CurrentUserField
-
 from items.models import Item
 
 
@@ -15,12 +11,7 @@ class TransactionType(models.Model):
 
 
 class TransactionArchive(models.Model):
-    transaction = models.ForeignKey(
-        TransactionType,
-        on_delete=models.PROTECT,
-        related_name="transactions",
-        blank=False,
-        null=False)
+    transaction = models.CharField(max_length=32, blank=False, null=False)
     item = models.ForeignKey(
         Item,
         on_delete=models.PROTECT,
@@ -30,9 +21,11 @@ class TransactionArchive(models.Model):
     )
     quantity = models.FloatField()
     quantity_after = models.FloatField(blank=True, null=True)
-    who = models.CharField(default=CurrentUserField(), max_length=64)
-    # who = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    who = models.CharField(default='Inter-Rex', max_length=64, null=True)
     when = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f" id:{self.id} -- trans:{self.transaction} --item: {self.item.name}"
 
 
 

@@ -1,7 +1,5 @@
 /venv
 /.idea
-*/__pycache__/*
-*__pycache__/*
 db.sqlite3
 
 #exclude everything
@@ -12,4 +10,12 @@ media/items/*
 
 /static/
 
-
+items/__pycache__
+items/migrations
+locations/__pycache__
+locations/migrations
+orders/__pycache__
+orders/migrations
+warehouse/__pycache__
+transactions/__pycache__
+transactions/migrations

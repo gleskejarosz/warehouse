@@ -12,7 +12,7 @@ def positive_number_validator(value: float):
         raise ValidationError("Quantity has to be greater than 0!")
 
 
-class PositiveNumberField(forms.IntegerField):
+class PositiveNumberField(forms.FloatField):
     def validate(self, value):
         super().validate(value)
         if value <= 0:
