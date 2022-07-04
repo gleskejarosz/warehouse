@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
     <p></p>
-<p> You're going to {{ trans.name }} {{ item.name }} in quantity of {{ amount }}</p>
+    {% if trans.name != "Total Scrap" %}
+<p> You're going to {{ trans.name }} {{ item.name }} in quantity of {{ amount }}.</p>
+    {% else %}
+        <p> You're going to totally scrap {{ item.name }} from stock. </p>
+    {% endif %}
 <p> Are you sure?</p>
         <p></p>
         <div>
@@ -14,6 +18,4 @@
                     <span class="glyphicon glyphicon-search"></span> discard
                 </button></a>
             </div>
-        <p></p>
-        <p></p>
 {% endblock %}

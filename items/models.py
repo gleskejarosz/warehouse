@@ -43,7 +43,7 @@ class Item(models.Model):
     image = models.ImageField(upload_to='items/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.producer_no}"
+        return f"{self.name} {self.producer_no}"
 
     def get_absolute_url(self):
         return reverse("items_app:items-detail-view", kwargs={

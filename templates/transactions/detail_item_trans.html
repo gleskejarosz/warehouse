@@ -1,7 +1,7 @@
 
 {% extends "base.html" %}
 {% block content %}
-<h3>Item to {{ transaction.name }}</h3>
+<h3>Item to {{ trans.name }}</h3>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -28,16 +28,12 @@
     </table>
     <form method="post">
         {% csrf_token %}
-        {% if transaction.name != 'Total Scrap' %}
             {{ form }}
-            <input type="submit" value={{ transaction.name }}>
-        {% else %}
-            <input type="button" value={{ transaction.name }}>
+            <input type="submit" value={{ trans.name }}>
 
-        {% endif %}
     </form>
     <p></p>
-    <a href="{% url 'transaction_app:transaction' trans=transaction.name  %}">
+    <a href="{% url 'transaction_app:transaction' trans=trans.name  %}">
         <button type="submit" class="btn btn-primary">
         <span class="glyphicon glyphicon-search"></span> Return
         </button>

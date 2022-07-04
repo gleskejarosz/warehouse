@@ -2,16 +2,12 @@
 {% block content %}
     <p></p>
 <p> No changes has been made.</p>
-<p> Are you sure?</p>
-        <p></p>
+    <p> {{ trans.name }} {{ amount }} {% if item.unit %}{{ item.unit }}{% endif %} of {{ item.name }} failed. </p>
+        <p>{{ message }}</p>
         <div>
-            <a href="{% url 'transaction_app:trans_on_item' trans=trans.name amount=amount pk=item.pk %}">
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span> confirm
-                </button>
             <a href="{{ request.META.HTTP_REFERER }}">
                 <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span> discard
+                    <span class="glyphicon glyphicon-search"></span> BACK
                 </button>
             </a>
         </div>

@@ -30,7 +30,7 @@ class CompanyUpdateView(UpdateView):
     model = Company
     fields = "__all__"
     template_name = "form.html"
-    success_url = reverse_lazy("items_app:company-list-view")
+    success_url = reverse_lazy("items_app:companies")
 
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):

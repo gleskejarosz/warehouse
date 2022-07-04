@@ -6,7 +6,7 @@
         <span class="glyphicon glyphicon-search"></span> Return
     </button>
 </a>
-<h3>Find Item to {{ trans }}:</h3>
+<h3>Find Item to {{ trans.name }}:</h3>
 <form method="get">
     <div class="well">
       <div class="row">
@@ -50,20 +50,26 @@
           <th>Producer no</th>
         <th>Category</th>
         <th>Quantity</th>
+        <th>Unit</th>
         <th>Supplier</th>
       </tr>
     </thead>
     <tbody>
       {% for item in filter.qs %}
         <tr>
-          <td><a href="{% url 'transaction_app:transaction-item' trans=trans pk=item.pk  %}">{{ item.name }}</a></td>
+          <td>
+              {% if trans.name != "Total Scrap" %}
+                <a href="{% url 'transaction_app:transaction-item' trans=trans.name pk=item.pk  %}">{{ item.name }}</a></td>
+              {% else %}
+                <a href="{% url 'transaction_app:confirmation' trans=trans.name pk=item.pk amount=0  %}">{{ item.name }}</a></td>
+                {% endif %}
             <td>{{ item.description }}</td>
             <td>{{ item.producer }}</td>
             <td>{{ item.producer_no }}</td>
             <td>{{ item.category }}</td>
             <td>{{ item.quantity }}</td>
+          <td>{{ item.unit }}</td>
           <td>{{ item.supplier }}</td>
-          <td>{{ item.supplier_no }}</td>
         </tr>
       {% empty %}
         <tr>
