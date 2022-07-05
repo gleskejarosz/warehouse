@@ -6,6 +6,12 @@ import django_filters
 from items.models import Item, Company
 
 
+class ItemModelForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        exclude = ["quantity"]
+
+
 class CompanyModelForm(forms.ModelForm):
     class Meta:
         model = Company

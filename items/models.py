@@ -31,7 +31,7 @@ class Item(models.Model):
     description = models.CharField(max_length=128, blank=True)
     registration_date = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="item_cat", blank=True, null=True)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=True, null=True)
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=False, null=False)
     quantity = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="item_location", blank=True, null=True)
     producer = models.ForeignKey("Company", on_delete=models.CASCADE, related_name="items_prod", blank=True, null=True)

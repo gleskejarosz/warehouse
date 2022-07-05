@@ -3,7 +3,7 @@ from django.views import View
 from items.models import Item, input_to_stock, withdraw, total_scrap, scrap, return_to_stock
 
 from transactions.models import TransactionType, TransactionArchive
-from transactions.forms import ItemTransactionFilter, AmountTransactionForm
+from transactions.forms import ItemTransactionFilter, AmountTransactionFormInt, AmountTransactionForm
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from transactions.__const__ import TRANSACTION_TYPES
@@ -52,7 +52,11 @@ class ItemTransactionDetail(View):
 
 
 def search_item(request, trans: str):
-    items_list = Item.objects.all().order_by('-registration_date')
+    if trans in ['Withdraw', 'Scrap', 'Total Scrap']:
+        items_list = Item.objects.filter(quantity__gt=0).order_by('-registration_date')
+    else:
+        items_list = Item.objects.all().order_by('-registration_date')
+
     items_filter = ItemTransactionFilter(request.GET, queryset=items_list)
     transaction = get_object_or_404(TransactionType, name=trans)
     return render(
@@ -66,8 +70,13 @@ def search_item(request, trans: str):
 
 
 def item_transaction_detail(request, trans, pk):
-    form = AmountTransactionForm(request.POST or None)
     item = get_object_or_404(Item, pk=pk)
+
+    if item.unit.unit == "sztuka":
+        form = AmountTransactionFormInt(request.POST or None)
+    else:
+        form = AmountTransactionForm(request.POST or None)
+
     transaction = get_object_or_404(TransactionType, name=trans)
     amount = form["amount"].value()
 
