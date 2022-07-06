@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from items.models import Item
 from orders.models import OrderDetail
 
 
@@ -7,10 +8,9 @@ class OrderDetailModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        OrderDetail.objects.create(item="0034.5228", quantity=10)
-
-    def test(self):
-        assert 1 == 1
+        Item.objects.create(name="E123", producer_no="E123")
+        item_1 = Item.objects.get(id=1)
+        OrderDetail.objects.create(item=item_1, quantity=10)
 
     def test_item_label(self):
         order_detail = OrderDetail.objects.get(id=1)
