@@ -72,7 +72,7 @@ def search_item(request, trans: str):
 def item_transaction_detail(request, trans, pk):
     item = get_object_or_404(Item, pk=pk)
 
-    if item.unit.unit == "sztuka":
+    if item.unit.integer:
         form = AmountTransactionFormInt(request.POST or None)
     else:
         form = AmountTransactionForm(request.POST or None)
