@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
 
-from .forms import CompanyModelForm
+from .forms import CompanyModelForm, ItemModelForm
 from .models import Company, Item, Unit, Category
 from .filters import ItemFilter
 
@@ -19,18 +20,28 @@ def items(request):
     )
 
 
-class ItemCreateView(LoginRequiredMixin, CreateView):
-    model = Item
+# class ItemCreateView(LoginRequiredMixin, CreateView):
+#     model = Item
+#     template_name = "form.html"
+#     fields = "__all__"
+#     success_url = reverse_lazy("items_app:items-list-view")
+
+class ItemCreateView(LoginRequiredMixin, FormView):
     template_name = "form.html"
-    fields = "__all__"
+    form_class = ItemModelForm
     success_url = reverse_lazy("items_app:items-list-view")
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        form.save()
+        return result
 
 
 class CompanyUpdateView(UpdateView):
     model = Company
     fields = "__all__"
     template_name = "form.html"
-    success_url = reverse_lazy("items_app:company-list-view")
+    success_url = reverse_lazy("items_app:companies")
 
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
@@ -64,11 +75,6 @@ class CompanyDetailView(DetailView):
 
 
 class ItemDetailView(DetailView):
-    model = Item
-    template_name = "items/my_item.html"
-
-
-class ItemDetailTransactionView(DetailView):
     model = Item
     template_name = "items/my_item.html"
 
@@ -143,7 +149,7 @@ class UnitListView(ListView):
 
 class UnitUpdateView(LoginRequiredMixin, UpdateView):
     model = Unit
-    fields = ("unit", "description")
+    fields = ("name", "description")
     template_name = "form.html"
     success_url = reverse_lazy("items_app:units-list-view")
 

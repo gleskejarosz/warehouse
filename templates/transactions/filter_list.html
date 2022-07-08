@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<a href="{% url 'transaction_app:transaction-list' %}">
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Return
+    </button>
+</a>
+<h3>Find Item to {{ trans.name }}:</h3>
+<form method="get">
+    <div class="well">
+      <div class="row">
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.name.label_tag }}
+          {% render_field filter.form.name class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.description.label_tag }}
+          {% render_field filter.form.description class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.category.label_tag }}
+          {% render_field filter.form.category class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.producer.label_tag }}
+          {% render_field filter.form.producer class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.producer_no.label_tag }}
+          {% render_field filter.form.producer_no class="form-control" %}
+        </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.supplier.label_tag }}
+          {% render_field filter.form.supplier class="form-control" %}
+        </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span> Search
+      </button>
+  </form>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+          <th>Description</th>
+          <th>Producer</th>
+          <th>Producer no</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Unit</th>
+        <th>Supplier</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in filter.qs %}
+        <tr>
+          <td>
+              {% if trans.name != "Total Scrap" %}
+                <a href="{% url 'transaction_app:transaction-item' trans=trans.name pk=item.pk  %}">{{ item.name }}</a></td>
+              {% else %}
+                <a href="{% url 'transaction_app:confirmation' trans=trans.name pk=item.pk amount=0  %}">{{ item.name }}</a></td>
+                {% endif %}
+            <td>{{ item.description }}</td>
+            <td>{{ item.producer }}</td>
+            <td>{{ item.producer_no }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.quantity }}</td>
+          <td>{{ item.unit }}</td>
+          <td>{{ item.supplier }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No data</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

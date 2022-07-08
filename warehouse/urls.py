@@ -13,7 +13,7 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('transaction/', include('transactions.urls')),
+    path('transactions/', include('transactions.urls')),
 ]
 
 if settings.DEBUG:

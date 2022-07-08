@@ -1,6 +1,4 @@
 from django.db import models
-from django_currentuser.db.models import CurrentUserField
-
 from items.models import Item
 
 
@@ -13,12 +11,7 @@ class TransactionType(models.Model):
 
 
 class TransactionArchive(models.Model):
-    transaction = models.ForeignKey(
-        TransactionType,
-        on_delete=models.PROTECT,
-        related_name="transactions",
-        blank=False,
-        null=False)
+    transaction = models.CharField(max_length=32, blank=False, null=False)
     item = models.ForeignKey(
         Item,
         on_delete=models.PROTECT,
@@ -28,9 +21,11 @@ class TransactionArchive(models.Model):
     )
     quantity = models.FloatField()
     quantity_after = models.FloatField(blank=True, null=True)
-    who = CurrentUserField()
-    when = models.DateTimeField(auto_now_add=True)
+    who = models.CharField( max_length=64, null=False)
+    when = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
+    def __str__(self):
+        return f" id:{self.id} -- trans:{self.transaction} --item: {self.item.name}"
 
 
 

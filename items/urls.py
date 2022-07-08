@@ -7,6 +7,7 @@ app_name = "items_app"
 
 urlpatterns = [
     path('items/index/', views.index, name="index"),
+    # path("items-create-view/", views.ItemCreateView.as_view(), name="items-create-view"),
     path("items-create-view/", views.ItemCreateView.as_view(), name="items-create-view"),
     path("items-detail-view/<pk>/", views.ItemDetailView.as_view(), name="items-detail-view"),
     path("items-update-view/<pk>/", views.ItemUpdateView.as_view(), name="items-update-view"),
@@ -41,3 +42,4 @@ urlpatterns = [
     path('category/index/', views.index, name="index"),
     path('category/', views.category, name="category"),
 ]
+

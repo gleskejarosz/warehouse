@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <p></p>
+    {% if trans.name != "Total Scrap" %}
+<p> You're going to {{ trans.name }} {{ item.name }} in quantity of {{ amount }}.</p>
+    {% else %}
+        <p> You're going to totally scrap {{ item.name }} from stock. </p>
+    {% endif %}
+<p> Are you sure?</p>
+        <p></p>
+        <div>
+            <a href="{% url 'transaction_app:trans_on_item' trans=trans.name amount=amount pk=item.pk %}">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> confirm
+                </button></a>
+            <a href="{{ request.META.HTTP_REFERER }}">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> discard
+                </button></a>
+            </div>
+{% endblock %}
