@@ -13,6 +13,7 @@
             <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Category</th>
             <th scope="col" width="6%" style="text-align: center; vertical-align: middle;">Unit</th>
             <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Qty</th>
+            <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Location</th>
         </tr>
         <tr>
             <td style="vertical-align: middle;">{{ item.name }}</td>
@@ -20,6 +21,7 @@
             <td style="text-align: center; vertical-align: middle;">{% if item.category %}{{ item.category }}{% endif %}</td>
             <td style="text-align: center; vertical-align: middle;">{% if item.unit %}{{ item.unit }}{% endif %}</td>
             <td style="text-align: center; vertical-align: middle;">{{ item.quantity }}</td>
+            <td style="text-align: center; vertical-align: middle;">{% if item.location %}{{ item.location }}{% endif %}</td>
         </tr>
         </thead>
     </table>
