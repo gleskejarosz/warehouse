@@ -142,7 +142,7 @@ def archive_transaction(request, item, transaction, quantity, after):
         item=item,
         quantity=quantity,
         quantity_after=after,
-        who=request.user.username
+        who=request.user.username,
     )
 
 

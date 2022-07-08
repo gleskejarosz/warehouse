@@ -18,11 +18,13 @@ class Category(models.Model):
 
 
 class Unit(models.Model):
-    unit = models.CharField(max_length=10)
+    name = models.CharField(max_length=10)
     description = models.CharField(max_length=128, blank=True)
+    integer = models.BooleanField(null=False, default=False)
+    iso = models.CharField(max_length=16, blank=True,null=True)
 
     def __str__(self):
-        return f" {self.unit}"
+        return f" {self.iso}"
 
 
 class Item(models.Model):
@@ -30,7 +32,7 @@ class Item(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=128, blank=True)
     registration_date = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="item_cat", blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="item_cat", null=True)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name="item_unit", blank=False, null=False)
     quantity = models.FloatField(default=0, validators=[MinValueValidator(0.0)])
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="item_location", blank=True, null=True)

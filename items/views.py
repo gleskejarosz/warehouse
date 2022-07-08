@@ -149,7 +149,7 @@ class UnitListView(ListView):
 
 class UnitUpdateView(LoginRequiredMixin, UpdateView):
     model = Unit
-    fields = ("unit", "description")
+    fields = ("name", "description")
     template_name = "form.html"
     success_url = reverse_lazy("items_app:units-list-view")
 

@@ -22,7 +22,7 @@ class TransactionArchive(models.Model):
     quantity = models.FloatField()
     quantity_after = models.FloatField(blank=True, null=True)
     who = models.CharField(default='Inter-Rex', max_length=64, null=True)
-    when = models.DateTimeField(auto_now_add=True)
+    when = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
     def __str__(self):
         return f" id:{self.id} -- trans:{self.transaction} --item: {self.item.name}"

@@ -17,3 +17,4 @@ media/items/*
 /warehouse/__pycache__
 /transactions/__pycache__
 /transactions/migrations
+*.ipynb
