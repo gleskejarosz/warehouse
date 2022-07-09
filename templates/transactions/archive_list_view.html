@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Transaction history:</h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col" width="6%">Ord. no.</th>
+            <th scope="col" width="8%">Transaction Type</th>
+            <th scope="col" width="26%">Item</th>
+            <th scope="col" width="6%">Amount</th>
+            <th scope="col" width="10%">Who</th>
+            <th scope="col" width="20%">When</th>
+            <th scope="col" width="6%">Amount after</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for o in object_list %}
+            <tr>
+{#                <th scope="row">{{ forloop.counter }}</th>#}
+                <td>{{ o.id }}</td>
+                <td>{{ o.transaction }}</td>
+                <td>{{ o.item_id }} -- {{ o.item }}  </td>
+                <td>{{ o.quantity }}</td>
+                <td>{{ o.who }}</td>
+                <td>{{ o.when }}</td>
+                <td>{{ o.quantity_after }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <header>
+{% if page_obj.has_other_pages %}
+  <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}"> &laquo; </a></li>
+    {% else %}
+      <li class="disabled"><span> &laquo; </span></li>
+    {% endif %}
+    {% for i in page_obj.paginator.page_range %}
+      {% if page_obj.number == i %}
+        <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
+      {% else %}
+          <a class="paginator_iter" href="?page={{ i }}"> {{   i  }} </a>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}"> &raquo; </a></li>
+    {% else %}
+      <li class="disabled"><span> &raquo </span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+    </header>
+
+    <a href="{% url 'items_app:items-index' %}">RETURN TO INDEX PAGE</a>
+{% endblock %}
