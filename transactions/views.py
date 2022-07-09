@@ -141,6 +141,7 @@ def transaction_error(request, pk, trans, amount):
         }
     )
 
+
 @login_required()
 def archive_transaction(request, item, transaction, quantity, after):
     TransactionArchive.objects.create(
@@ -150,6 +151,7 @@ def archive_transaction(request, item, transaction, quantity, after):
         quantity_after=after,
         who=request.user.username,
     )
+
 
 @login_required()
 def transaction_on_item(request, pk, trans, amount):
@@ -181,7 +183,7 @@ def transaction_on_item(request, pk, trans, amount):
 
     if q_after != q_before:
         archive_transaction(request=request, item=item, transaction=trans, quantity=amount, after=q_after)
-        return HttpResponseRedirect(reverse("transaction_app:transaction", args={trans.name}))
+        return HttpResponseRedirect(reverse("transaction_app:transaction", kwargs={"trans": trans.name}))
 
     return transaction_error(request, pk, trans, amount)
 
