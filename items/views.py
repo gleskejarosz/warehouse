@@ -82,7 +82,7 @@ class ItemDetailView(DetailView):
 class CompanyListView(ListView):
     template_name = "items/companies.html"
     model = Company
-    paginate_by = 10
+    paginate_by = 3
 
     # def change_pagination(self, number):
     #     if isinstance(number, int):
@@ -128,7 +128,7 @@ class UnitCreateView(LoginRequiredMixin, CreateView):
     model = Unit
     template_name = "form.html"
     fields = "__all__"
-    success_url = reverse_lazy("items_app:units-list-view")
+    success_url = reverse_lazy("items_app:units")
 
 
 class UnitDeleteView(LoginRequiredMixin, DeleteView):
@@ -149,9 +149,9 @@ class UnitListView(ListView):
 
 class UnitUpdateView(LoginRequiredMixin, UpdateView):
     model = Unit
-    fields = ("name", "description")
+    fields = "__all__"
     template_name = "form.html"
-    success_url = reverse_lazy("items_app:units-list-view")
+    success_url = reverse_lazy("items_app:units")
 
 
 def category(request):

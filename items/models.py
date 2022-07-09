@@ -21,10 +21,10 @@ class Unit(models.Model):
     name = models.CharField(max_length=10)
     description = models.CharField(max_length=128, blank=True)
     integer = models.BooleanField(null=False, default=False)
-    iso = models.CharField(max_length=16, blank=True,null=True)
+    iso = models.CharField(max_length=16, blank=True, null=True)
 
     def __str__(self):
-        return f" {self.iso}"
+        return f" {self.name}"
 
 
 class Item(models.Model):
@@ -64,7 +64,8 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image:
-            image_resize(self.image, 1000, 800)
+            # image_resize(self.image, 1000, 800)
+            image_resize(self.image, 200, 200)
         super().save(*args, **kwargs)
 
 

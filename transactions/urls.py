@@ -11,6 +11,7 @@ urlpatterns = [
     path('transaction/confirmation/<str:trans>/item/<pk>/<amount>/', views.confirmation_on_item, name="confirmation"),
     path('transaction/<str:trans>/item/<pk>/<amount>/', views.transaction_on_item, name="trans_on_item"),
     path('tranaction_error/<str:trans>/<pk>/<amount>/', views.transaction_error, name="transaction_error"),
+    path('tranaction_archive/', views.TransactionArchiveView.as_view(), name="transaction_archive"),
     path('transaction_list_init/', views.transactions_initialize, name="transaction-list-init"),
 ]
 

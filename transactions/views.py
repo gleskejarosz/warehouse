@@ -1,5 +1,9 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views import View
+from django.views.generic import ListView
+
 from items.models import Item, input_to_stock, withdraw, total_scrap, scrap, return_to_stock
 
 from transactions.models import TransactionType, TransactionArchive
@@ -9,6 +13,7 @@ from django.urls import reverse
 from transactions.__const__ import TRANSACTION_TYPES
 
 
+@login_required
 def transactions(request):
     return render(
         request,
@@ -28,7 +33,7 @@ def transaction_input(request):
     )
 
 
-class ItemTransactionView(View):
+class ItemTransactionView(LoginRequiredMixin, View):
     def get(self, request):
         return render(
             request,
@@ -37,7 +42,7 @@ class ItemTransactionView(View):
         )
 
 
-class ItemTransactionDetail(View):
+class ItemTransactionDetail(LoginRequiredMixin, View):
     def get(self, request, pk, trans):
         item = get_object_or_404(Item, pk=pk)
         transaction = get_object_or_404(TransactionType, name=trans)
@@ -50,7 +55,7 @@ class ItemTransactionDetail(View):
                 'form': AmountTransactionForm()}
         )
 
-
+@login_required()
 def search_item(request, trans: str):
     if trans in ['Withdraw', 'Scrap', 'Total Scrap']:
         items_list = Item.objects.filter(quantity__gt=0).order_by('-registration_date')
@@ -68,7 +73,7 @@ def search_item(request, trans: str):
         }
     )
 
-
+@login_required()
 def item_transaction_detail(request, trans, pk):
     item = get_object_or_404(Item, pk=pk)
 
@@ -102,6 +107,7 @@ def item_transaction_detail(request, trans, pk):
     )
 
 
+@login_required()
 def confirmation_on_item(request, pk, trans, amount):
     item = get_object_or_404(Item, pk=pk)
     trans = get_object_or_404(TransactionType, name=trans)
@@ -135,7 +141,7 @@ def transaction_error(request, pk, trans, amount):
         }
     )
 
-
+@login_required()
 def archive_transaction(request, item, transaction, quantity, after):
     TransactionArchive.objects.create(
         transaction=transaction.name,
@@ -145,7 +151,7 @@ def archive_transaction(request, item, transaction, quantity, after):
         who=request.user.username,
     )
 
-
+@login_required()
 def transaction_on_item(request, pk, trans, amount):
     item = get_object_or_404(Item, pk=pk)
     trans = get_object_or_404(TransactionType, name=trans)
@@ -184,3 +190,9 @@ def transactions_initialize(request):
     for transaction in TRANSACTION_TYPES:
         TransactionType.objects.create(name=transaction[0], description=transaction[1])
     return HttpResponseRedirect(reverse("transaction_app:transaction-list"))
+
+
+class TransactionArchiveView(ListView):
+    template_name = "transactions/archive_list_view.html"
+    model = TransactionArchive
+    paginate_by = 10

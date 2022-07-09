@@ -1,23 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
-    <p><a href="{% url 'items_app:company-model-form-view' %}">ADD Company</a></p>
-<h2>COMPANIES</h2>
+<h2>Transaction history:</h2>
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col" width="5%">ID</th>
-            <th scope="col" width="15%">Name</th>
-            <th scope="col" width="20%">Contact</th>
-            <th scope="col" width="20%">Min Order Value</th>
+            <th scope="col" width="6%">Ord. no.</th>
+            <th scope="col" width="8%">Transaction Type</th>
+            <th scope="col" width="26%">Item</th>
+            <th scope="col" width="6%">Amount</th>
+            <th scope="col" width="10%">Who</th>
+            <th scope="col" width="20%">When</th>
+            <th scope="col" width="6%">Amount after</th>
         </tr>
         </thead>
         <tbody>
-        {% for c in object_list %}
+        {% for o in object_list %}
             <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td><a href="{% url 'items_app:company-detail-view' pk=c.pk %}">{{ c.name }}</a></td>
-                <td>{{ c.contact_person }} </td>
-                <td>{{ c.minimum_order_value }} PLN</td>
+{#                <th scope="row">{{ forloop.counter }}</th>#}
+                <td>{{ o.id }}</td>
+                <td>{{ o.transaction }}</td>
+                <td>{{ o.item_id }} -- {{ o.item }}  </td>
+                <td>{{ o.quantity }}</td>
+                <td>{{ o.who }}</td>
+                <td>{{ o.when }}</td>
+                <td>{{ o.quantity_after }}</td>
             </tr>
         {% endfor %}
         </tbody>

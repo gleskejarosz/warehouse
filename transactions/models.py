@@ -25,7 +25,8 @@ class TransactionArchive(models.Model):
     when = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
     def __str__(self):
-        return f" id:{self.id} -- trans:{self.transaction} --item: {self.item.name}"
+
+        return f"{self.id}__ {self.transaction}/Item: {self.item.name}"
 
 
 
