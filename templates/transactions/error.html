@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    <p></p>
+<p> No changes has been made.</p>
+    <p> {{ trans.name }} {{ amount }} {% if item.unit %}{{ item.unit }}{% endif %} of {{ item.name }} failed. </p>
+        <p>{{ message }}</p>
+        <div>
+            <a href="{{ request.META.HTTP_REFERER }}">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> BACK
+                </button>
+            </a>
+        </div>
+        <p></p>
+    <a href="{% url 'homepage' %}">RETURN</a>
+{% endblock %}

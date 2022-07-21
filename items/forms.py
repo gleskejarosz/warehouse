@@ -1,8 +1,15 @@
 import string
 
 from django import forms
+import django_filters
 
-from items.models import Company
+from items.models import Item, Company
+
+
+class ItemModelForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        exclude = ["quantity"]
 
 
 class CompanyModelForm(forms.ModelForm):
@@ -19,3 +26,11 @@ class CompanyModelForm(forms.ModelForm):
     def clean_email(self):
         return self.cleaned_data["email"].lower()
 
+
+class ItemFilter(django_filters.FilterSet):
+    class Meta:
+        model = Item
+        exclude = (
+            "registration_date",
+            "image",
+        )

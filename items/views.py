@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DeleteView, UpdateView, DetailView, CreateView
 
-from .forms import CompanyModelForm
+from .forms import CompanyModelForm, ItemModelForm
 from .models import Company, Item, Unit, Category
 from .filters import ItemFilter
 
@@ -19,18 +20,28 @@ def items(request):
     )
 
 
-class ItemCreateView(LoginRequiredMixin, CreateView):
-    model = Item
+# class ItemCreateView(LoginRequiredMixin, CreateView):
+#     model = Item
+#     template_name = "form.html"
+#     fields = "__all__"
+#     success_url = reverse_lazy("items_app:items-list-view")
+
+class ItemCreateView(LoginRequiredMixin, FormView):
     template_name = "form.html"
-    fields = "__all__"
+    form_class = ItemModelForm
     success_url = reverse_lazy("items_app:items-list-view")
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        form.save()
+        return result
 
 
 class CompanyUpdateView(UpdateView):
     model = Company
     fields = "__all__"
     template_name = "form.html"
-    success_url = reverse_lazy("items_app:company-list-view")
+    success_url = reverse_lazy("items_app:companies")
 
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
@@ -44,7 +55,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 class CompanyDeleteView(DeleteView):
     model = Company
     template_name = "items/delete.html"
-    success_url = reverse_lazy("items_app:companies-template-view")
+    success_url = reverse_lazy("items_app:companies")
 
 
 class ItemDeleteView(LoginRequiredMixin, DeleteView):
@@ -55,7 +66,7 @@ class ItemDeleteView(LoginRequiredMixin, DeleteView):
 
 class CompanyTemplateView(TemplateView):
     template_name = "items/companies.html"
-    extra_context = {"companies": Company.objects.all()}
+    extra_context = {"object_list": Company.objects.all()}
 
 
 class CompanyDetailView(DetailView):
@@ -69,9 +80,13 @@ class ItemDetailView(DetailView):
 
 
 class CompanyListView(ListView):
-    # permission_required =
-    template_name = "items/list_view.html"
+    template_name = "items/companies.html"
     model = Company
+    paginate_by = 3
+
+    # def change_pagination(self, number):
+    #     if isinstance(number, int):
+    #         self.paginate_by = number
 
 
 class ItemListView(ListView):
@@ -86,7 +101,7 @@ class ItemListView(ListView):
 class CompanyModelFormView(FormView):
     template_name = "form.html"
     form_class = CompanyModelForm
-    success_url = reverse_lazy('items_app:company-template-view')
+    success_url = reverse_lazy('items_app:companies')
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -113,7 +128,7 @@ class UnitCreateView(LoginRequiredMixin, CreateView):
     model = Unit
     template_name = "form.html"
     fields = "__all__"
-    success_url = reverse_lazy("items_app:units-list-view")
+    success_url = reverse_lazy("items_app:units")
 
 
 class UnitDeleteView(LoginRequiredMixin, DeleteView):
@@ -134,9 +149,9 @@ class UnitListView(ListView):
 
 class UnitUpdateView(LoginRequiredMixin, UpdateView):
     model = Unit
-    fields = ("unit", "description")
+    fields = "__all__"
     template_name = "form.html"
-    success_url = reverse_lazy("items_app:units-list-view")
+    success_url = reverse_lazy("items_app:units")
 
 
 def category(request):
@@ -187,7 +202,7 @@ class SearchResultsView(ListView):
             Q(name__icontains=query) | Q(description__icontains=query) |
             Q(producer_no__icontains=query) | Q(supplier_no__icontains=query) |
             Q(producer__name__icontains=query) | Q(supplier__name__icontains=query) |
-            Q(category__name__icontains=query) | Q(unit__unit__icontains=query)
+            Q(category__name__icontains=query) | Q(unit__name__icontains=query)
         ).order_by('name')
         return object_list
 
