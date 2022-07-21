@@ -61,6 +61,7 @@
         <th>Category</th>
         <th>Unit</th>
         <th>Quantity</th>
+        <th>Location</th>
         <th>Producer</th>
         <th>Producer no</th>
         <th>Supplier</th>
@@ -75,6 +76,7 @@
           <td>{% if item.category %}{{ item.category }}{% endif %}</td>
           <td>{% if item.unit %}{{ item.unit }}{% endif %}</td>
           <td>{{ item.quantity }}</td>
+          <td>{% if item.location %}{{ item.location }}{% endif %}</td>
           <td>{% if item.producer %}{{ item.producer }}{% endif %}</td>
           <td>{{ item.producer_no }}</td>
           <td>{% if item.supplier %}{{ item.supplier }}{% endif %}</td>
