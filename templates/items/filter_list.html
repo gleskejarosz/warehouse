@@ -22,10 +22,6 @@
           {% render_field filter.form.category class="form-control" %}
         </div>
         <div class="form-group col-sm-4 col-md-3">
-          {{ filter.form.unit.label_tag }}
-          {% render_field filter.form.unit class="form-control" %}
-        </div>
-        <div class="form-group col-sm-4 col-md-3">
           {{ filter.form.producer.label_tag }}
           {% render_field filter.form.producer class="form-control" %}
         </div>
@@ -45,6 +41,10 @@
           {{ filter.form.location.label_tag }}
           {% render_field filter.form.location class="form-control" %}
         </div>
+        <div class="form-group col-sm-4 col-md-3">
+          {{ filter.form.bin.label_tag }}
+          {% render_field filter.form.bin class="form-control" %}
+        </div>
         </div>
       </div>
       <button type="submit" class="btn btn-primary">
@@ -62,6 +62,7 @@
         <th>Unit</th>
         <th>Quantity</th>
         <th>Location</th>
+        <th>Bin</th>
         <th>Producer</th>
         <th>Producer no</th>
         <th>Supplier</th>
@@ -77,6 +78,7 @@
           <td>{% if item.unit %}{{ item.unit }}{% endif %}</td>
           <td>{{ item.quantity }}</td>
           <td>{% if item.location %}{{ item.location }}{% endif %}</td>
+          <td>{% if item.bin %}{{ item.bin }}{% endif %}</td>
           <td>{% if item.producer %}{{ item.producer }}{% endif %}</td>
           <td>{{ item.producer_no }}</td>
           <td>{% if item.supplier %}{{ item.supplier }}{% endif %}</td>

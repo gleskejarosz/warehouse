@@ -10,10 +10,11 @@
         <tr>
             <th scope="col" width="20%" style="vertical-align: middle;">Name</th>
             <th scope="col" width="50%" style="vertical-align: middle;">Description</th>
-            <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Category</th>
+            <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Category</th>
             <th scope="col" width="6%" style="text-align: center; vertical-align: middle;">Unit</th>
-            <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Qty</th>
-            <th scope="col" width="9%" style="text-align: center; vertical-align: middle;">Location</th>
+            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Qty</th>
+            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Location</th>
+            <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Bin</th>
         </tr>
         <tr>
             <td style="vertical-align: middle;">{{ item.name }}</td>
@@ -22,6 +23,7 @@
             <td style="text-align: center; vertical-align: middle;">{% if item.unit %}{{ item.unit }}{% endif %}</td>
             <td style="text-align: center; vertical-align: middle;">{{ item.quantity }}</td>
             <td style="text-align: center; vertical-align: middle;">{% if item.location %}{{ item.location }}{% endif %}</td>
+            <td style="text-align: center; vertical-align: middle;">{% if item.bin %}{{ item.bin }}{% endif %}</td>
         </tr>
         </thead>
     </table>
@@ -54,5 +56,5 @@
         <p><a href="{% url 'items_app:items-update-view' pk=item.pk %}">UPDATE</a></p>
         <p><a href="{% url 'items_app:items-delete-view' pk=item.pk %}">DELETE</a></p>
     {% endif %}
-    <a href="{% url 'items_app:index' %}">RETURN TO DASHBOARD</a>
+    <a href="{% url 'items_app:search-form' %}">GO BACK</a>
 {% endblock %}

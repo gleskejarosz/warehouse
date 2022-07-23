@@ -35,6 +35,11 @@ class PositiveNumberInt(forms.FloatField):
 
 
 class ItemTransactionFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr="contains", label="Name")
+    description = django_filters.CharFilter(lookup_expr="contains", label="Description")
+    producer_no = django_filters.CharFilter(lookup_expr="contains", label="Producer No")
+    supplier_no = django_filters.CharFilter(lookup_expr="contains", label="Supplier No")
+    bin = django_filters.CharFilter(lookup_expr="contains", label="Bin")
 
     class Meta:
         model = Item
@@ -45,6 +50,9 @@ class ItemTransactionFilter(django_filters.FilterSet):
             "category",
             "producer",
             "supplier",
+            "supplier_no",
+            "location",
+            "bin"
         ]
 
 

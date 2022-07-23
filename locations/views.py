@@ -12,7 +12,7 @@ def location(request):
     return render(
         request,
         template_name="location/location.html",
-        context={"location": Location.objects.all()}
+        context={"location": Location.objects.all().order_by('location')}
     )
 
 

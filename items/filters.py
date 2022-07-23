@@ -7,6 +7,7 @@ class ItemFilter(django_filters.FilterSet):
     description = django_filters.CharFilter(lookup_expr="contains", label="Description")
     producer_no = django_filters.CharFilter(lookup_expr="contains", label="Producer No")
     supplier_no = django_filters.CharFilter(lookup_expr="contains", label="Supplier No")
+    bin = django_filters.CharFilter(lookup_expr="contains", label="Bin")
 
     class Meta:
         model = Item

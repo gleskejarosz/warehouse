@@ -4,13 +4,14 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col" width="6%">Ord. no.</th>
+            <th scope="col" width="6%">Order no</th>
             <th scope="col" width="8%">Transaction Type</th>
-            <th scope="col" width="26%">Item</th>
-            <th scope="col" width="6%">Amount</th>
+            <th scope="col" width="5%">Item / Id</th>
+            <th scope="col" width="10%">Item / Producer No</th>
+            <th scope="col" width="6%">Qty</th>
             <th scope="col" width="10%">Who</th>
             <th scope="col" width="20%">When</th>
-            <th scope="col" width="6%">Amount after</th>
+            <th scope="col" width="6%">New Qty</th>
         </tr>
         </thead>
         <tbody>
@@ -19,7 +20,8 @@
 {#                <th scope="row">{{ forloop.counter }}</th>#}
                 <td>{{ o.id }}</td>
                 <td>{{ o.transaction }}</td>
-                <td>{{ o.item_id }} -- {{ o.item }}  </td>
+                <td>{{ o.item_id }}</td>
+                <td>{{ o.item.producer_no }}  </td>
                 <td>{{ o.quantity }}</td>
                 <td>{{ o.who }}</td>
                 <td>{{ o.when }}</td>

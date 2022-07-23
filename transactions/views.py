@@ -55,6 +55,7 @@ class ItemTransactionDetail(LoginRequiredMixin, View):
                 'form': AmountTransactionForm()}
         )
 
+
 @login_required()
 def search_item(request, trans: str):
     if trans in ['Withdraw', 'Scrap', 'Total Scrap']:
@@ -72,6 +73,7 @@ def search_item(request, trans: str):
             'trans': transaction
         }
     )
+
 
 @login_required()
 def item_transaction_detail(request, trans, pk):
@@ -127,7 +129,7 @@ def transaction_error(request, pk, trans, amount):
 
     message = "Action forbidden."
 
-    if trans.name == "Withdraw":
+    if trans.name == "WITHDRAW":
         message = "Probably you want to withdraw more than stock has."
 
     return render(
@@ -159,23 +161,23 @@ def transaction_on_item(request, pk, trans, amount):
     trans = get_object_or_404(TransactionType, name=trans)
     q_before = get_object_or_404(Item, pk=pk).quantity
 
-    if trans.name == 'Input':
+    if trans.name == 'INPUT':
         input_to_stock(item, amount=float(amount))
         item.save()
 
-    if trans.name == 'Withdraw':
+    if trans.name == 'WITHDRAW':
         withdraw(item, amount=float(amount))
         item.save()
 
-    if trans.name == 'Total Scrap':
+    if trans.name == 'TOTAL SCRAP':
         total_scrap(item)
         item.save()
 
-    if trans.name == 'Scrap':
+    if trans.name == 'SCRAP':
         scrap(item, amount=float(amount))
         item.save()
 
-    if trans.name == 'Return to stock':
+    if trans.name == 'RETURN TO STOCK':
         return_to_stock(item, amount=float(amount))
         item.save()
 
@@ -198,3 +200,7 @@ class TransactionArchiveView(ListView):
     template_name = "transactions/archive_list_view.html"
     model = TransactionArchive
     paginate_by = 10
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', '-when')
+        return ordering

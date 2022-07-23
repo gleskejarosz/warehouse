@@ -14,6 +14,8 @@
             <th scope="col" width="15%" style="text-align: center; vertical-align: middle;">Producer</th>
             <th scope="col" width="5%" style="text-align: center; vertical-align: middle;">Unit</th>
             <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Quantity</th>
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Location</th>
+            <th scope="col" width="7%" style="text-align: center; vertical-align: middle;">Bin</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +28,8 @@
                 <td style="text-align: center; vertical-align: middle;">{% if i.producer %}{{ i.producer }}{% endif %}</td>
                 <td style="text-align: center; vertical-align: middle;">{% if i.unit %}{{ i.unit }}{% endif %}</td>
                 <td style="text-align: center; vertical-align: middle;">{{ i.quantity }} </td>
+                <td style="text-align: center; vertical-align: middle;">{% if i.location %}{{ i.location }}{% endif %}</td>
+                <td style="text-align: center; vertical-align: middle;">{% if i.bin %}{{ i.bin }}{% endif %}</td>
             </tr>
         {% endfor %}
         </tbody>

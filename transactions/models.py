@@ -19,8 +19,8 @@ class TransactionArchive(models.Model):
         blank=False,
         null=False
     )
-    quantity = models.FloatField()
-    quantity_after = models.FloatField(blank=True, null=True)
+    quantity = models.PositiveSmallIntegerField()
+    quantity_after = models.PositiveSmallIntegerField(blank=True, null=True)
     who = models.CharField( max_length=64, null=False)
     when = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 

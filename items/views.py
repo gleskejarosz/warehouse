@@ -202,7 +202,8 @@ class SearchResultsView(ListView):
             Q(name__icontains=query) | Q(description__icontains=query) |
             Q(producer_no__icontains=query) | Q(supplier_no__icontains=query) |
             Q(producer__name__icontains=query) | Q(supplier__name__icontains=query) |
-            Q(category__name__icontains=query) | Q(unit__name__icontains=query)
+            Q(category__name__icontains=query) | Q(unit__name__icontains=query) |
+            Q(location__location__icontains=query) | Q(bin__icontains=query)
         ).order_by('name')
         return object_list
 
