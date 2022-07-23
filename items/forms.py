@@ -2,11 +2,14 @@ import string
 
 from django import forms
 import django_filters
+from django.forms import ModelChoiceField
 
 from items.models import Item, Company
+from locations.models import Location
 
 
 class ItemModelForm(forms.ModelForm):
+
     class Meta:
         model = Item
         exclude = ["quantity"]

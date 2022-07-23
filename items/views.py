@@ -46,8 +46,21 @@ class CompanyUpdateView(UpdateView):
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
     model = Item
-    fields = "__all__"
-    exclude = ("registration_date", )
+    fields = (
+        "name",
+        "description",
+        "category",
+        "unit",
+        "location",
+        "bin",
+        "producer",
+        "producer_no",
+        "supplier",
+        "supplier_no",
+        "minimum_quantity",
+        "minimum_order",
+        "image",
+    )
     template_name = "form.html"
     success_url = reverse_lazy("items_app:items-list-view")
 
