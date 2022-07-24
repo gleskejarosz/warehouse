@@ -20,12 +20,6 @@ def items(request):
     )
 
 
-# class ItemCreateView(LoginRequiredMixin, CreateView):
-#     model = Item
-#     template_name = "form.html"
-#     fields = "__all__"
-#     success_url = reverse_lazy("items_app:items-list-view")
-
 class ItemCreateView(LoginRequiredMixin, FormView):
     template_name = "form.html"
     form_class = ItemModelForm

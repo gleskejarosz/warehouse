@@ -2,13 +2,17 @@ import string
 
 from django import forms
 import django_filters
-from django.forms import ModelChoiceField
 
-from items.models import Item, Company
+from items.models import Item, Company, Category, Unit
 from locations.models import Location
 
 
 class ItemModelForm(forms.ModelForm):
+    category = forms.ModelChoiceField(Category.objects.all().order_by("name"))
+    unit = forms.ModelChoiceField(Unit.objects.all().order_by("name"))
+    location = forms.ModelChoiceField(Location.objects.all().order_by("location"))
+    producer = forms.ModelChoiceField(Company.objects.all().order_by("name"))
+    supplier = forms.ModelChoiceField(Company.objects.all().order_by("name"))
 
     class Meta:
         model = Item
